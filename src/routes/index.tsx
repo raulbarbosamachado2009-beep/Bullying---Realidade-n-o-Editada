@@ -7,7 +7,6 @@ import {
   Flag,
   HeartHandshake,
   Layers,
-  LifeBuoy,
   MessageSquare,
   RefreshCcw,
   ShieldAlert,
@@ -321,5 +320,3 @@ function LoginStep() {
     </motion.section>
   );
 }
-
-void LifeBuoy;
