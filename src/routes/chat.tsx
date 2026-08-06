@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, ArrowUp, Bot, User } from "lucide-react";
+import { ArrowLeft, ArrowUp, Bot, Square, User } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { PageTransition } from "@/components/PageTransition";
@@ -44,25 +44,95 @@ const suggestions = [
 function ChatPage() {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  function send(text: string) {
+  async function send(text: string) {
     const value = text.trim();
-    if (!value) return;
-    setMessages((prev) => [
-      ...prev,
-      { id: prev.length, role: "user", text: value },
-      {
-        id: prev.length + 1,
-        role: "assistant",
-        text: "Esta interface está preparada para uma futura integração de IA. Enquanto isso, explore as seções educativas e os minigames para aprender sobre este tema.",
-      },
-    ]);
+    if (!value || loading) return;
     setInput("");
+    setError(null);
+
+    const history = [...messages, { id: messages.length, role: "user" as const, text: value }];
+    setMessages([...history, { id: history.length, role: "assistant", text: "" }]);
+    setLoading(true);
+
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
+        body: JSON.stringify({
+          messages: history.map((m) => ({ role: m.role, content: m.text })),
+        }),
+      });
+
+      if (res.status === 429) throw new Error("Muitas mensagens em pouco tempo. Tente novamente em instantes.");
+      if (res.status === 402) throw new Error("Os créditos de IA acabaram. Peça ao responsável pelo projeto para recarregar.");
+      if (!res.ok || !res.body) throw new Error("Não consegui responder agora. Tente novamente.");
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let answer = "";
+
+      for (;;) {
+        const { done, value: chunk } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(chunk, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() ?? "";
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed.startsWith("data:")) continue;
+          const data = trimmed.slice(5).trim();
+          if (!data || data === "[DONE]") continue;
+          try {
+            const parsed = JSON.parse(data) as {
+              choices?: { delta?: { content?: string } }[];
+            };
+            const delta = parsed.choices?.[0]?.delta?.content;
+            if (delta) {
+              answer += delta;
+              setMessages((prev) => {
+                const next = [...prev];
+                const last = next[next.length - 1];
+                if (last && last.role === "assistant") next[next.length - 1] = { ...last, text: answer };
+                return next;
+              });
+            }
+          } catch {
+            // ignora fragmentos incompletos
+          }
+        }
+      }
+
+      if (!answer) {
+        setMessages((prev) => {
+          const next = [...prev];
+          const last = next[next.length - 1];
+          if (last && last.role === "assistant")
+            next[next.length - 1] = { ...last, text: "Não consegui gerar uma resposta. Pode reformular a pergunta?" };
+          return next;
+        });
+      }
+    } catch (err) {
+      if ((err as Error).name === "AbortError") return;
+      setError((err as Error).message);
+      setMessages((prev) => prev.filter((m, i) => !(i === prev.length - 1 && m.text === "")));
+    } finally {
+      setLoading(false);
+      abortRef.current = null;
+    }
   }
 
   return (
@@ -108,7 +178,9 @@ function ChatPage() {
                         : "max-w-[85%] text-sm leading-relaxed text-foreground"
                     }
                   >
-                    {m.text}
+                    {m.text || (
+                      <span className="animate-pulse text-muted-foreground">Pensando…</span>
+                    )}
                   </p>
                   {m.role === "user" ? (
                     <span className="glass mt-1 inline-flex size-8 shrink-0 items-center justify-center rounded-full">
@@ -121,12 +193,19 @@ function ChatPage() {
             <div ref={endRef} />
           </div>
 
+          {error ? (
+            <p role="alert" className="mb-3 rounded-2xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-foreground">
+              {error}
+            </p>
+          ) : null}
+
           <div className="mb-3 flex flex-wrap gap-2">
             {suggestions.map((s) => (
               <button
                 key={s}
                 type="button"
-                onClick={() => send(s)}
+                onClick={() => void send(s)}
+                disabled={loading}
                 className="focus-ring glass rounded-full px-4 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
               >
                 {s}
@@ -137,7 +216,7 @@ function ChatPage() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              send(input);
+              void send(input);
             }}
             className="glass flex items-end gap-2 rounded-3xl p-2"
           >
@@ -152,20 +231,31 @@ function ChatPage() {
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                  send(input);
+                  void send(input);
                 }
               }}
               placeholder="Escreva sua mensagem…"
               className="max-h-40 flex-1 resize-none bg-transparent px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
             />
-            <button
-              type="submit"
-              aria-label="Enviar mensagem"
-              disabled={!input.trim()}
-              className="focus-ring inline-flex size-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
-            >
-              <ArrowUp className="size-5" aria-hidden="true" />
-            </button>
+            {loading ? (
+              <button
+                type="button"
+                aria-label="Parar resposta"
+                onClick={() => abortRef.current?.abort()}
+                className="focus-ring inline-flex size-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground"
+              >
+                <Square className="size-4" aria-hidden="true" />
+              </button>
+            ) : (
+              <button
+                type="submit"
+                aria-label="Enviar mensagem"
+                disabled={!input.trim()}
+                className="focus-ring inline-flex size-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
+              >
+                <ArrowUp className="size-5" aria-hidden="true" />
+              </button>
+            )}
           </form>
         </main>
       </div>

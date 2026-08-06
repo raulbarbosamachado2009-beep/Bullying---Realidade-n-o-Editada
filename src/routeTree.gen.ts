@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as MinigamesRouteImport } from './routes/minigames'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,18 +35,25 @@ const MinigamesRoute = MinigamesRouteImport.update({
   path: '/minigames',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/home': typeof HomeRoute
   '/minigames': typeof MinigamesRoute
+  '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/home': typeof HomeRoute
   '/minigames': typeof MinigamesRoute
+  '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,14 @@ export interface FileRoutesById {
   '/chat': typeof ChatRoute
   '/home': typeof HomeRoute
   '/minigames': typeof MinigamesRoute
+  '/api/chat': typeof ApiChatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/chat' | '/home' | '/minigames'
+  fullPaths: '/' | '/chat' | '/home' | '/minigames' | '/api/chat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/chat' | '/home' | '/minigames'
-  id: '__root__' | '/' | '/chat' | '/home' | '/minigames'
+  to: '/' | '/chat' | '/home' | '/minigames' | '/api/chat'
+  id: '__root__' | '/' | '/chat' | '/home' | '/minigames' | '/api/chat'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +76,7 @@ export interface RootRouteChildren {
   ChatRoute: typeof ChatRoute
   HomeRoute: typeof HomeRoute
   MinigamesRoute: typeof MinigamesRoute
+  ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MinigamesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,17 +124,8 @@ const rootRouteChildren: RootRouteChildren = {
   ChatRoute: ChatRoute,
   HomeRoute: HomeRoute,
   MinigamesRoute: MinigamesRoute,
+  ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
