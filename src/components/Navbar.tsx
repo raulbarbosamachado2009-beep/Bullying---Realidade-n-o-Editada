@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { Menu, ShieldCheck, X } from "lucide-react";
+import { Menu, RotateCcw, ShieldCheck, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -50,6 +50,17 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
+          <Button
+            asChild
+            size="sm"
+            variant="secondary"
+            className="hidden rounded-full sm:inline-flex"
+          >
+            <Link to="/" aria-label="Voltar para o início de tudo">
+              <RotateCcw className="size-4" aria-hidden="true" />
+              Recomeçar
+            </Link>
+          </Button>
           <Button asChild size="sm" className="hidden rounded-full sm:inline-flex">
             <Link to="/minigames">Começar Agora</Link>
           </Button>
@@ -84,6 +95,16 @@ export function Navbar() {
               </Link>
             </li>
           ))}
+          <li>
+            <Link
+              to="/"
+              onClick={() => setOpen(false)}
+              className="focus-ring flex items-center gap-2 rounded-2xl px-4 py-3 text-sm text-muted-foreground hover:bg-white/5 hover:text-foreground"
+            >
+              <RotateCcw className="size-4" aria-hidden="true" />
+              Recomeçar do início
+            </Link>
+          </li>
         </motion.ul>
       ) : null}
     </motion.header>
