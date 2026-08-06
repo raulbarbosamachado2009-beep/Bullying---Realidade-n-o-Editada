@@ -178,7 +178,9 @@ function ChatPage() {
                         : "max-w-[85%] text-sm leading-relaxed text-foreground"
                     }
                   >
-                    {m.text}
+                    {m.text || (
+                      <span className="animate-pulse text-muted-foreground">Pensando…</span>
+                    )}
                   </p>
                   {m.role === "user" ? (
                     <span className="glass mt-1 inline-flex size-8 shrink-0 items-center justify-center rounded-full">
