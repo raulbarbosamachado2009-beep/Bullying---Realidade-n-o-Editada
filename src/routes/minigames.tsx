@@ -471,14 +471,14 @@ function MinigamesPage() {
     <PageTransition>
       <AnimatedBackground />
       <Navbar />
-      <main className="px-6 pb-24 pt-36">
+      <main className="flex h-dvh flex-col items-center justify-center overflow-hidden px-4 pb-6 pt-24 sm:px-6 sm:pt-28">
         <SectionTitle
           eyebrow="Minigames"
           title="Aprender jogando"
           subtitle="Seis desafios com formatos diferentes e pontuação local. Nada é enviado para lugar nenhum."
         />
 
-        <div className="mx-auto mt-14 grid max-w-5xl gap-5 sm:grid-cols-2">
+        <div className="mx-auto mt-6 grid w-full max-w-5xl gap-3 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4">
           {games.map((g, i) => (
             <motion.div
               key={g.id}
@@ -487,12 +487,12 @@ function MinigamesPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: i * 0.08, ease: [0.32, 0.72, 0, 1] }}
             >
-              <GlassCard interactive className="flex h-full flex-col gap-4 p-8">
-                <span className="glass inline-flex size-12 items-center justify-center rounded-2xl">
-                  <g.Icon className="size-6 text-primary" aria-hidden="true" />
+              <GlassCard interactive className="flex h-full flex-col gap-2 p-4 lg:gap-3 lg:p-5">
+                <span className="glass inline-flex size-10 items-center justify-center rounded-2xl">
+                  <g.Icon className="size-5 text-primary" aria-hidden="true" />
                 </span>
-                <h3 className="text-xl font-semibold">{g.title}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">{g.description}</p>
+                <h3 className="text-base font-semibold lg:text-lg">{g.title}</h3>
+                <p className="text-xs leading-relaxed text-muted-foreground">{g.description}</p>
                 <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
                   {g.kind === "quiz" ? g.questions.length : g.rounds.length} desafios
                 </p>
@@ -511,7 +511,7 @@ function MinigamesPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.35 }}
-              className="fixed inset-0 z-[60] flex items-center justify-center overflow-y-auto bg-black/70 p-4 backdrop-blur-xl"
+              className="fixed inset-0 z-[60] flex items-center justify-center overflow-hidden bg-black/70 p-3 backdrop-blur-xl sm:p-4"
               role="dialog"
               aria-modal="true"
               aria-label={game.title}
@@ -521,7 +521,7 @@ function MinigamesPage() {
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 exit={{ scale: 0.96, opacity: 0 }}
                 transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-                className="glass my-auto w-full max-w-xl rounded-3xl p-8"
+                className="glass max-h-[92dvh] w-full max-w-xl overflow-hidden rounded-3xl p-5 sm:p-7"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>
@@ -562,9 +562,9 @@ function MinigamesPage() {
                   (() => {
                     const question = game.questions[index]!;
                     return (
-                      <div className="mt-6">
-                        <h3 className="text-xl font-semibold leading-snug">{question.prompt}</h3>
-                        <ul className="mt-6 space-y-3">
+                      <div className="mt-4">
+                        <h3 className="text-base font-semibold leading-snug sm:text-lg">{question.prompt}</h3>
+                        <ul className="mt-4 space-y-2">
                           {question.options.map((opt, i) => {
                             const selected = choice === i;
                             const isCorrect = i === question.correct;
@@ -577,7 +577,7 @@ function MinigamesPage() {
                                     setChoice(i);
                                     if (isCorrect) setScore((s) => s + 1);
                                   }}
-                                  className={`focus-ring w-full rounded-2xl border px-5 py-4 text-left text-sm transition-all duration-500 ${
+                                  className={`focus-ring w-full rounded-2xl border px-4 py-2.5 text-left text-sm transition-all duration-500 ${
                                     choice !== null && isCorrect
                                       ? "border-success/60 bg-success/10"
                                       : selected
@@ -609,8 +609,8 @@ function MinigamesPage() {
                     const shuffled = [...remaining].sort((a, b) => a.localeCompare(b));
                     const correctSoFar = picked.every((s, i) => s === round.steps[i]);
                     return (
-                      <div className="mt-6">
-                        <h3 className="text-xl font-semibold leading-snug">{round.prompt}</h3>
+                      <div className="mt-4">
+                        <h3 className="text-base font-semibold leading-snug sm:text-lg">{round.prompt}</h3>
                         <ol className="mt-5 space-y-2">
                           {picked.map((s, i) => (
                             <li
@@ -641,7 +641,7 @@ function MinigamesPage() {
                                         setScore((sc) => sc + 1);
                                     }
                                   }}
-                                  className="focus-ring w-full rounded-2xl border border-border px-5 py-4 text-left text-sm transition-all duration-300 hover:border-white/30 hover:bg-white/5"
+                                  className="focus-ring w-full rounded-2xl border border-border px-4 py-2.5 text-left text-sm transition-all duration-300 hover:border-white/30 hover:bg-white/5"
                                 >
                                   {s}
                                 </button>
@@ -664,8 +664,8 @@ function MinigamesPage() {
                     const round = game.rounds[index]!;
                     const ok = value >= round.min && value <= round.max;
                     return (
-                      <div className="mt-6">
-                        <h3 className="text-xl font-semibold leading-snug">{round.prompt}</h3>
+                      <div className="mt-4">
+                        <h3 className="text-base font-semibold leading-snug sm:text-lg">{round.prompt}</h3>
                         <div className="mt-8">
                           <label htmlFor="termometro" className="sr-only">
                             Gravidade da situação
@@ -713,7 +713,6 @@ function MinigamesPage() {
           ) : null}
         </AnimatePresence>
       </main>
-      <Footer />
     </PageTransition>
   );
 }
@@ -724,7 +723,7 @@ function Feedback({ ok, text, onNext }: { ok: boolean; text: string; onNext: () 
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
-      className="mt-6"
+      className="mt-4"
     >
       <p className="flex items-start gap-2 text-sm text-muted-foreground">
         {ok ? (
@@ -734,7 +733,7 @@ function Feedback({ ok, text, onNext }: { ok: boolean; text: string; onNext: () 
         )}
         {text}
       </p>
-      <Button className="mt-5 w-full rounded-full" onClick={onNext}>
+      <Button className="mt-4 w-full rounded-full" onClick={onNext}>
         Continuar
       </Button>
     </motion.div>
