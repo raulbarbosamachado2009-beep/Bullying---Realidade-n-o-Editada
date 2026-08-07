@@ -470,7 +470,7 @@ function MinigamesPage() {
     <PageTransition>
       <AnimatedBackground />
       <Navbar />
-      <main className="flex h-dvh flex-col items-center justify-center overflow-hidden px-4 pb-6 pt-24 sm:px-6 sm:pt-28">
+      <main className="flex min-h-dvh flex-col items-center px-4 pb-16 pt-24 sm:px-6 sm:pt-28">
         <SectionTitle
           eyebrow="Minigames"
           title="Aprender jogando"
@@ -510,7 +510,7 @@ function MinigamesPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.35 }}
-              className="fixed inset-0 z-[60] flex items-center justify-center overflow-hidden bg-black/70 p-3 backdrop-blur-xl sm:p-4"
+              className="fixed inset-0 z-[60] flex items-center justify-center overflow-y-auto bg-black/70 p-3 backdrop-blur-xl sm:p-4"
               role="dialog"
               aria-modal="true"
               aria-label={game.title}
@@ -520,7 +520,7 @@ function MinigamesPage() {
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 exit={{ scale: 0.96, opacity: 0 }}
                 transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-                className="glass max-h-[92dvh] w-full max-w-xl overflow-hidden rounded-3xl p-5 sm:p-7"
+                className="glass max-h-[92dvh] w-full max-w-xl overflow-y-auto rounded-3xl p-5 sm:p-7"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>
