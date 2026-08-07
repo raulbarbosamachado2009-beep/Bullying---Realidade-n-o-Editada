@@ -154,6 +154,13 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  html,
+  body {
+    max-width: 100%;
+    overscroll-behavior-x: none;
   }
 
   h1,
