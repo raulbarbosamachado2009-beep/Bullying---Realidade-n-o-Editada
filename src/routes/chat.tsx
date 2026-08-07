@@ -135,6 +135,115 @@ function ChatPage() {
     }
   }
 
+  const started = messages.some((m) => m.role === "user");
+
+  const composer = (
+    <div className="w-full">
+      {error ? (
+        <p
+          role="alert"
+          className="mb-3 rounded-2xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-foreground"
+        >
+          {error}
+        </p>
+      ) : null}
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          void send(input);
+        }}
+        className="glass flex items-end gap-2 rounded-3xl p-2"
+      >
+        <label htmlFor="chat-input" className="sr-only">
+          Escreva sua mensagem
+        </label>
+        <textarea
+          id="chat-input"
+          rows={1}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              void send(input);
+            }
+          }}
+          placeholder="Escreva sua mensagem…"
+          className="max-h-40 flex-1 resize-none bg-transparent px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+        />
+        {loading ? (
+          <button
+            type="button"
+            aria-label="Parar resposta"
+            onClick={() => abortRef.current?.abort()}
+            className="focus-ring inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground"
+          >
+            <Square className="size-4" aria-hidden="true" />
+          </button>
+        ) : (
+          <button
+            type="submit"
+            aria-label="Enviar mensagem"
+            disabled={!input.trim()}
+            className="focus-ring inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
+          >
+            <ArrowUp className="size-5" aria-hidden="true" />
+          </button>
+        )}
+      </form>
+
+      <div className="mt-3 flex flex-wrap justify-center gap-2">
+        {suggestions.map((s) => (
+          <button
+            key={s}
+            type="button"
+            onClick={() => void send(s)}
+            disabled={loading}
+            className="focus-ring glass rounded-full px-4 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {s}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  if (!started) {
+    return (
+      <PageTransition>
+        <AnimatedBackground />
+        <div className="flex min-h-dvh flex-col">
+          <header className="flex items-center gap-3 px-5 py-5">
+            <Link
+              to="/home"
+              aria-label="Voltar para a home"
+              className="focus-ring glass inline-flex size-11 items-center justify-center rounded-2xl"
+            >
+              <ArrowLeft className="size-5" aria-hidden="true" />
+            </Link>
+          </header>
+
+          <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center px-4 pb-10">
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+              className="w-full text-center"
+            >
+              <h1 className="text-gradient text-3xl font-semibold sm:text-5xl">IA Educativa</h1>
+              <p className="mx-auto mt-3 max-w-lg text-sm text-muted-foreground sm:text-base">
+                Assistente educacional sobre bullying: entenda os tipos, reconheça sinais de alerta,
+                saiba como agir, apoiar e denunciar com segurança.
+              </p>
+              <div className="mt-8">{composer}</div>
+            </motion.div>
+          </main>
+        </div>
+      </PageTransition>
+    );
+  }
+
   return (
     <PageTransition>
       <AnimatedBackground />
@@ -148,13 +257,13 @@ function ChatPage() {
             <ArrowLeft className="size-5" aria-hidden="true" />
           </Link>
           <div>
-            <h1 className="text-base font-semibold">IA Educacional</h1>
-            <p className="text-xs text-muted-foreground">Interface demonstrativa</p>
+            <h1 className="text-base font-semibold">IA Educativa</h1>
+            <p className="text-xs text-muted-foreground">Assistente sobre bullying</p>
           </div>
         </header>
 
-        <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 pb-6">
-          <div className="flex-1 space-y-6 overflow-y-auto py-6" role="log" aria-live="polite">
+        <main className="mx-auto w-full max-w-3xl flex-1 px-4 pb-56 sm:pb-52">
+          <div className="space-y-6 py-6" role="log" aria-live="polite">
             <AnimatePresence initial={false}>
               {messages.map((m) => (
                 <motion.div
@@ -192,72 +301,11 @@ function ChatPage() {
             </AnimatePresence>
             <div ref={endRef} />
           </div>
-
-          {error ? (
-            <p role="alert" className="mb-3 rounded-2xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-foreground">
-              {error}
-            </p>
-          ) : null}
-
-          <div className="mb-3 flex flex-wrap gap-2">
-            {suggestions.map((s) => (
-              <button
-                key={s}
-                type="button"
-                onClick={() => void send(s)}
-                disabled={loading}
-                className="focus-ring glass rounded-full px-4 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              void send(input);
-            }}
-            className="glass flex items-end gap-2 rounded-3xl p-2"
-          >
-            <label htmlFor="chat-input" className="sr-only">
-              Escreva sua mensagem
-            </label>
-            <textarea
-              id="chat-input"
-              rows={1}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  void send(input);
-                }
-              }}
-              placeholder="Escreva sua mensagem…"
-              className="max-h-40 flex-1 resize-none bg-transparent px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
-            />
-            {loading ? (
-              <button
-                type="button"
-                aria-label="Parar resposta"
-                onClick={() => abortRef.current?.abort()}
-                className="focus-ring inline-flex size-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground"
-              >
-                <Square className="size-4" aria-hidden="true" />
-              </button>
-            ) : (
-              <button
-                type="submit"
-                aria-label="Enviar mensagem"
-                disabled={!input.trim()}
-                className="focus-ring inline-flex size-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
-              >
-                <ArrowUp className="size-5" aria-hidden="true" />
-              </button>
-            )}
-          </form>
         </main>
+
+        <div className="fixed inset-x-0 bottom-0 z-40 bg-gradient-to-t from-background via-background/90 to-transparent px-4 pb-4 pt-6">
+          <div className="mx-auto w-full max-w-3xl">{composer}</div>
+        </div>
       </div>
     </PageTransition>
   );
