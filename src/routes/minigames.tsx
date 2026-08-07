@@ -477,7 +477,7 @@ function MinigamesPage() {
           subtitle="Seis desafios com formatos diferentes e pontuação local. Nada é enviado para lugar nenhum."
         />
 
-        <div className="mx-auto mt-6 grid w-full max-w-5xl gap-3 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4">
+        <div className="mx-auto mt-5 grid w-full max-w-5xl grid-cols-2 gap-3 sm:mt-8 lg:grid-cols-3 lg:gap-4">
           {games.map((g, i) => (
             <motion.div
               key={g.id}
@@ -491,11 +491,11 @@ function MinigamesPage() {
                   <g.Icon className="size-5 text-primary" aria-hidden="true" />
                 </span>
                 <h3 className="text-base font-semibold lg:text-lg">{g.title}</h3>
-                <p className="text-xs leading-relaxed text-muted-foreground">{g.description}</p>
-                <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                <p className="hidden text-xs leading-relaxed text-muted-foreground sm:block">{g.description}</p>
+                <p className="hidden text-xs uppercase tracking-[0.2em] text-muted-foreground sm:block">
                   {g.kind === "quiz" ? g.questions.length : g.rounds.length} desafios
                 </p>
-                <Button className="mt-auto w-fit rounded-full" onClick={() => start(g.id)}>
+                <Button size="sm" className="mt-auto w-fit rounded-full" onClick={() => start(g.id)}>
                   Jogar
                 </Button>
               </GlassCard>
