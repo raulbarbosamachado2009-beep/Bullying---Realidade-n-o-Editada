@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
-import { Footer } from "@/components/Footer";
 import { GlassCard } from "@/components/GlassCard";
 import { Navbar } from "@/components/Navbar";
 import { PageTransition } from "@/components/PageTransition";
