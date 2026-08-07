@@ -100,7 +100,7 @@ function Wizard() {
   return (
     <>
       <AnimatedBackground />
-      <main className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden px-6 py-24">
+      <main className="relative flex h-dvh flex-col items-center justify-center overflow-hidden px-4 py-16 sm:px-6">
         <AnimatePresence mode="wait">
           {step === 0 ? <Welcome key="s0" onNext={() => setStep(1)} /> : null}
           {step === 1 ? <Topics key="s1" onNext={() => setStep(2)} /> : null}
@@ -108,7 +108,7 @@ function Wizard() {
           {step === 3 ? <LoginStep key="s3" /> : null}
         </AnimatePresence>
 
-        <nav aria-label="Progresso" className="absolute bottom-8 flex gap-2">
+        <nav aria-label="Progresso" className="absolute bottom-4 flex gap-2 sm:bottom-6">
           {[0, 1, 2, 3].map((i) => (
             <span
               key={i}
@@ -134,13 +134,13 @@ const screen = {
 function Welcome({ onNext }: { onNext: () => void }) {
   return (
     <motion.section {...screen} className="w-full max-w-3xl text-center">
-      <h1 className="text-5xl font-semibold leading-[1.08] text-gradient sm:text-7xl">
+      <h1 className="text-4xl font-semibold leading-[1.08] text-gradient sm:text-6xl lg:text-7xl">
         Olá!
-        <span className="mt-4 block text-2xl font-medium text-muted-foreground sm:text-3xl">
+        <span className="mt-3 block text-lg font-medium text-muted-foreground sm:text-2xl lg:text-3xl">
           Seja bem-vindo à Imersão Bullying – Realidade não Editada
         </span>
       </h1>
-      <Button size="lg" className="mt-12 rounded-full px-10 text-base" onClick={onNext}>
+      <Button size="lg" className="mt-8 rounded-full px-10 text-base sm:mt-12" onClick={onNext}>
         Começar
       </Button>
     </motion.section>
@@ -150,10 +150,10 @@ function Welcome({ onNext }: { onNext: () => void }) {
 function Topics({ onNext }: { onNext: () => void }) {
   return (
     <motion.section {...screen} className="w-full max-w-3xl">
-      <h2 className="text-center text-4xl font-semibold text-gradient sm:text-5xl">
+      <h2 className="text-center text-2xl font-semibold text-gradient sm:text-4xl lg:text-5xl">
         Aqui vamos aprender:
       </h2>
-      <ul className="mx-auto mt-12 grid gap-3 sm:grid-cols-2">
+      <ul className="mx-auto mt-6 grid gap-2 sm:mt-10 sm:grid-cols-2 sm:gap-3">
         {topics.map((t, i) => (
           <motion.li
             key={t.label}
@@ -161,14 +161,14 @@ function Topics({ onNext }: { onNext: () => void }) {
             animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
             transition={{ duration: 0.6, delay: 0.15 + i * 0.08, ease }}
           >
-            <GlassCard className="flex items-center gap-3 rounded-2xl p-4">
+            <GlassCard className="flex items-center gap-3 rounded-2xl p-3 sm:p-4">
               <t.Icon className="size-5 shrink-0 text-primary" aria-hidden="true" />
               <span className="text-sm">{t.label}</span>
             </GlassCard>
           </motion.li>
         ))}
       </ul>
-      <div className="mt-12 text-center">
+      <div className="mt-6 text-center sm:mt-10">
         <Button size="lg" className="rounded-full px-10" onClick={onNext}>
           Continuar
         </Button>
@@ -184,12 +184,12 @@ function Quiz({ onNext }: { onNext: () => void }) {
   return (
     <motion.section {...screen} className="w-full max-w-2xl">
       <p className="text-center text-xs uppercase tracking-[0.25em] text-primary">Questão Teste</p>
-      <h2 className="mt-4 text-center text-2xl font-semibold leading-snug sm:text-3xl">
+      <h2 className="mt-3 text-center text-lg font-semibold leading-snug sm:text-2xl lg:text-3xl">
         Se algum colega de classe zomba de você por questões relacionadas à raça, etnia ou religião,
         você:
       </h2>
 
-      <ul className="mt-10 space-y-3">
+      <ul className="mt-5 space-y-2 sm:mt-8 sm:space-y-3">
         {options.map((o, i) => {
           const isSelected = selected === i;
           return (
@@ -203,7 +203,7 @@ function Quiz({ onNext }: { onNext: () => void }) {
                 type="button"
                 aria-pressed={isSelected}
                 onClick={() => setSelected(i)}
-                className={`focus-ring glass flex w-full items-center gap-4 rounded-2xl px-5 py-4 text-left text-sm transition-all duration-500 hover:scale-[1.01] ${
+                className={`focus-ring glass flex w-full items-center gap-4 rounded-2xl px-4 py-3 text-left text-sm transition-all sm:px-5 sm:py-4 duration-500 hover:scale-[1.01] ${
                   isSelected
                     ? o.good
                       ? "border-success/60"
@@ -237,9 +237,9 @@ function Quiz({ onNext }: { onNext: () => void }) {
             exit={{ opacity: 0, y: -8, filter: "blur(8px)" }}
             transition={{ duration: 0.5, ease }}
             role="status"
-            className="mt-8"
+            className="mt-4 sm:mt-6"
           >
-            <GlassCard className="flex items-start gap-3 rounded-2xl p-5">
+            <GlassCard className="flex items-start gap-3 rounded-2xl p-4">
               {chosen.good ? (
                 <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-success" aria-hidden="true" />
               ) : (
@@ -251,7 +251,7 @@ function Quiz({ onNext }: { onNext: () => void }) {
         ) : null}
       </AnimatePresence>
 
-      <div className="mt-10 text-center">
+      <div className="mt-5 text-center sm:mt-8">
         <Button
           size="lg"
           className="rounded-full px-10"
@@ -269,15 +269,15 @@ function LoginStep() {
   const navigate = useNavigate();
 
   return (
-    <motion.section {...screen} className="grid w-full max-w-6xl gap-10 lg:grid-cols-2">
+    <motion.section {...screen} className="grid w-full max-w-6xl gap-6 lg:grid-cols-2 lg:gap-10">
       <div className="flex items-center">
-        <GlassCard className="w-full p-8 sm:p-10">
+        <GlassCard className="w-full p-6 sm:p-8">
           <h2 className="text-3xl font-semibold text-gradient">Entrar</h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Acesso simbólico, apenas para continuar a experiência.
           </p>
           <form
-            className="mt-8 space-y-5"
+            className="mt-5 space-y-4"
             onSubmit={(e) => {
               e.preventDefault();
               navigate({ to: "/home" });
@@ -299,7 +299,7 @@ function LoginStep() {
         </GlassCard>
       </div>
 
-      <ul className="grid gap-4 sm:grid-cols-2">
+      <ul className="hidden gap-3 sm:grid sm:grid-cols-2 lg:gap-4">
         {infoCards.map((c, i) => (
           <motion.li
             key={c.title}
@@ -307,7 +307,7 @@ function LoginStep() {
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 0.6, delay: 0.15 + i * 0.07, ease }}
           >
-            <GlassCard interactive className="h-full rounded-2xl p-6">
+            <GlassCard interactive className="h-full rounded-2xl p-4 lg:p-6">
               <span className="glass inline-flex size-10 items-center justify-center rounded-xl">
                 <c.Icon className="size-5 text-primary" aria-hidden="true" />
               </span>
