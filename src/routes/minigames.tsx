@@ -14,6 +14,7 @@ import { useState } from "react";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { GlassCard } from "@/components/GlassCard";
 import { Navbar } from "@/components/Navbar";
+import { MobileTabBar, MobileTabBarSpacer, MobileTopBar } from "@/components/MobileShell";
 import { PageTransition } from "@/components/PageTransition";
 import { SectionTitle } from "@/components/SectionTitle";
 import { Button } from "@/components/ui/button";
@@ -72,6 +73,15 @@ type Game =
       Icon: typeof Brain;
       rounds: ScaleRound[];
     };
+
+const gameEmoji: Record<string, string> = {
+  quiz: "🧠",
+  vf: "✅",
+  atitude: "⚖️",
+  situacao: "✍️",
+  ordem: "🔢",
+  termometro: "🌡️",
+};
 
 const games: Game[] = [
   {
@@ -470,12 +480,18 @@ function MinigamesPage() {
     <PageTransition>
       <AnimatedBackground />
       <Navbar />
-      <main className="flex min-h-dvh flex-col items-center px-4 pb-16 pt-24 sm:px-6 sm:pt-28">
-        <SectionTitle
+      <MobileTopBar emoji="🎮" title="Minigames" subtitle="Aprender jogando" />
+      <main className="flex min-h-dvh flex-col items-center px-4 pb-16 pt-20 sm:px-6 lg:pt-28">
+        <div className="hidden lg:block">
+          <SectionTitle
           eyebrow="Minigames"
           title="Aprender jogando"
           subtitle="Seis desafios com formatos diferentes e pontuação local. Nada é enviado para lugar nenhum."
-        />
+          />
+        </div>
+        <p className="mt-2 max-w-md text-center text-[13px] text-muted-foreground lg:hidden">
+          Seis desafios rápidos. Sua pontuação fica só no seu aparelho. 🔒
+        </p>
 
         <div className="mx-auto mt-5 grid w-full max-w-5xl grid-cols-2 gap-3 sm:mt-8 lg:grid-cols-3 lg:gap-4">
           {games.map((g, i) => (
@@ -486,8 +502,14 @@ function MinigamesPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: i * 0.08, ease: [0.32, 0.72, 0, 1] }}
             >
-              <GlassCard interactive className="flex h-full flex-col gap-2 p-4 lg:gap-3 lg:p-5">
-                <span className="glass inline-flex size-10 items-center justify-center rounded-2xl">
+              <GlassCard
+                interactive
+                className="flex h-full flex-col gap-2 p-4 transition-transform active:scale-95 lg:gap-3 lg:p-5"
+              >
+                <span aria-hidden="true" className="text-2xl lg:hidden">
+                  {gameEmoji[g.id]}
+                </span>
+                <span className="glass hidden size-10 items-center justify-center rounded-2xl lg:inline-flex">
                   <g.Icon className="size-5 text-primary" aria-hidden="true" />
                 </span>
                 <h3 className="text-base font-semibold lg:text-lg">{g.title}</h3>
@@ -520,7 +542,7 @@ function MinigamesPage() {
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 exit={{ scale: 0.96, opacity: 0 }}
                 transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-                className="glass max-h-[92dvh] w-full max-w-xl overflow-y-auto rounded-3xl p-5 sm:p-7"
+                className="glass max-h-[92dvh] w-full max-w-xl overflow-y-auto rounded-3xl p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:p-7"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>
@@ -711,7 +733,9 @@ function MinigamesPage() {
             </motion.div>
           ) : null}
         </AnimatePresence>
+        <MobileTabBarSpacer />
       </main>
+      <MobileTabBar />
     </PageTransition>
   );
 }

@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowUp, Bot, Square, User } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { PageTransition } from "@/components/PageTransition";
+import { MobileTabBar, MobileTopBar } from "@/components/MobileShell";
 
 export const Route = createFileRoute("/chat")({
   head: () => ({
@@ -35,10 +36,10 @@ const initialMessages: Message[] = [
 ];
 
 const suggestions = [
-  "O que é bullying?",
-  "Como identificar sinais?",
-  "Como denunciar na escola?",
-  "Como apoiar uma vítima?",
+  { emoji: "❓", text: "O que é bullying?" },
+  { emoji: "🔍", text: "Como identificar sinais?" },
+  { emoji: "🏫", text: "Como denunciar na escola?" },
+  { emoji: "🤝", text: "Como apoiar uma vítima?" },
 ];
 
 function ChatPage() {
@@ -196,13 +197,16 @@ function ChatPage() {
       <div className="mt-3 flex flex-wrap justify-center gap-2">
         {suggestions.map((s) => (
           <button
-            key={s}
+            key={s.text}
             type="button"
-            onClick={() => void send(s)}
+            onClick={() => void send(s.text)}
             disabled={loading}
-            className="focus-ring glass rounded-full px-4 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            className="focus-ring glass rounded-full px-3.5 py-2 text-xs text-muted-foreground transition-all hover:text-foreground active:scale-95"
           >
-            {s}
+            <span aria-hidden="true" className="mr-1 lg:hidden">
+              {s.emoji}
+            </span>
+            {s.text}
           </button>
         ))}
       </div>
@@ -213,8 +217,9 @@ function ChatPage() {
     return (
       <PageTransition>
         <AnimatedBackground />
-        <div className="flex min-h-dvh flex-col">
-          <header className="flex items-center gap-3 px-5 py-5">
+        <MobileTopBar emoji="🤖" title="IA Educativa" subtitle="Assistente sobre bullying" backTo="/home" />
+        <div className="flex min-h-dvh flex-col pt-14 lg:pt-0">
+          <header className="hidden items-center gap-3 px-5 py-5 lg:flex">
             <Link
               to="/home"
               aria-label="Voltar para a home"
@@ -224,14 +229,19 @@ function ChatPage() {
             </Link>
           </header>
 
-          <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center px-4 pb-10">
+          <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center px-4 pb-28 lg:pb-10">
             <motion.div
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
               className="w-full text-center"
             >
-              <h1 className="text-gradient text-3xl font-semibold sm:text-5xl">IA Educativa</h1>
+              <h1 className="text-gradient text-3xl font-semibold sm:text-5xl">
+                <span aria-hidden="true" className="mr-2 lg:hidden">
+                  🤖
+                </span>
+                IA Educativa
+              </h1>
               <p className="mx-auto mt-3 max-w-lg text-sm text-muted-foreground sm:text-base">
                 Assistente educacional sobre bullying: entenda os tipos, reconheça sinais de alerta,
                 saiba como agir, apoiar e denunciar com segurança.
@@ -240,6 +250,7 @@ function ChatPage() {
             </motion.div>
           </main>
         </div>
+        <MobileTabBar />
       </PageTransition>
     );
   }
@@ -247,8 +258,9 @@ function ChatPage() {
   return (
     <PageTransition>
       <AnimatedBackground />
-      <div className="flex min-h-dvh flex-col">
-        <header className="flex items-center gap-3 px-5 py-5">
+      <MobileTopBar emoji="🤖" title="IA Educativa" subtitle="Assistente sobre bullying" backTo="/home" />
+      <div className="flex min-h-dvh flex-col pt-14 lg:pt-0">
+        <header className="hidden items-center gap-3 px-5 py-5 lg:flex">
           <Link
             to="/home"
             aria-label="Voltar para a home"
@@ -262,7 +274,7 @@ function ChatPage() {
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-3xl flex-1 px-4 pb-56 sm:pb-52">
+        <main className="mx-auto w-full max-w-3xl flex-1 px-4 pb-64 sm:pb-52">
           <div className="space-y-6 py-6" role="log" aria-live="polite">
             <AnimatePresence initial={false}>
               {messages.map((m) => (
@@ -303,10 +315,11 @@ function ChatPage() {
           </div>
         </main>
 
-        <div className="fixed inset-x-0 bottom-0 z-40 bg-gradient-to-t from-background via-background/90 to-transparent px-4 pb-4 pt-6">
+        <div className="fixed inset-x-0 bottom-[68px] z-40 bg-gradient-to-t from-background via-background/90 to-transparent px-4 pb-3 pt-6 lg:bottom-0 lg:pb-4">
           <div className="mx-auto w-full max-w-3xl">{composer}</div>
         </div>
       </div>
+      <MobileTabBar />
     </PageTransition>
   );
 }

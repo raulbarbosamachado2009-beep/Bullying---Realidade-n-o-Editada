@@ -17,6 +17,7 @@ import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { Footer } from "@/components/Footer";
 import { GlassCard } from "@/components/GlassCard";
 import { Navbar } from "@/components/Navbar";
+import { MobileTabBar, MobileTabBarSpacer, MobileTopBar } from "@/components/MobileShell";
 import { PageTransition } from "@/components/PageTransition";
 import { SectionTitle } from "@/components/SectionTitle";
 import { Button } from "@/components/ui/button";
@@ -47,13 +48,20 @@ export const Route = createFileRoute("/home")({
 });
 
 const types = [
-  { Icon: Zap, title: "Físico", text: "Empurrões, chutes, agressões e danos a pertences." },
-  { Icon: MessageSquare, title: "Verbal", text: "Apelidos, xingamentos, humilhações e ameaças." },
-  { Icon: Brain, title: "Psicológico", text: "Chantagem, manipulação, intimidação e perseguição." },
-  { Icon: Globe, title: "Virtual", text: "Cyberbullying: exposição e ataques em redes e grupos." },
-  { Icon: Users, title: "Social", text: "Exclusão deliberada, boatos e isolamento do grupo." },
-  { Icon: Sparkle, title: "Racial", text: "Ofensas relacionadas a raça, cor, etnia ou origem." },
-  { Icon: Landmark, title: "Religioso", text: "Zombarias e discriminação por crença ou fé." },
+  { Icon: Zap, emoji: "💥", title: "Físico", text: "Empurrões, chutes, agressões e danos a pertences." },
+  { Icon: MessageSquare, emoji: "🗯️", title: "Verbal", text: "Apelidos, xingamentos, humilhações e ameaças." },
+  { Icon: Brain, emoji: "🧠", title: "Psicológico", text: "Chantagem, manipulação, intimidação e perseguição." },
+  { Icon: Globe, emoji: "📱", title: "Virtual", text: "Cyberbullying: exposição e ataques em redes e grupos." },
+  { Icon: Users, emoji: "🚷", title: "Social", text: "Exclusão deliberada, boatos e isolamento do grupo." },
+  { Icon: Sparkle, emoji: "✊🏾", title: "Racial", text: "Ofensas relacionadas a raça, cor, etnia ou origem." },
+  { Icon: Landmark, emoji: "🕊️", title: "Religioso", text: "Zombarias e discriminação por crença ou fé." },
+];
+
+const mobileShortcuts = [
+  { to: "/minigames" as const, emoji: "🎮", title: "Minigames", text: "6 desafios rápidos" },
+  { to: "/chat" as const, emoji: "🤖", title: "IA Educativa", text: "Tire suas dúvidas" },
+  { to: "/home" as const, hash: "aprender", emoji: "📚", title: "Aprender", text: "Tipos e sinais" },
+  { to: "/" as const, emoji: "🔄", title: "Recomeçar", text: "Refazer a imersão" },
 ];
 
 const signs = [
@@ -117,11 +125,12 @@ function HomePage() {
     <PageTransition>
       <AnimatedBackground />
       <Navbar />
+      <MobileTopBar emoji="🛡️" title="Imersão Bullying" subtitle="Realidade não Editada" />
 
-      <main>
+      <main className="pt-14 lg:pt-0">
         <section
           id="inicio"
-          className="relative flex min-h-dvh items-center justify-center px-6 pt-32 text-center"
+          className="relative flex min-h-[78dvh] items-center justify-center px-6 pt-10 text-center lg:min-h-dvh lg:pt-32"
         >
           <div className="mx-auto max-w-3xl">
             <motion.p
@@ -136,7 +145,7 @@ function HomePage() {
               initial={{ opacity: 0, y: 30, filter: "blur(12px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 1, delay: 0.1, ease: [0.32, 0.72, 0, 1] }}
-              className="mt-8 text-5xl font-semibold leading-[1.05] text-gradient sm:text-7xl"
+              className="mt-6 text-4xl font-semibold leading-[1.05] text-gradient sm:text-7xl lg:mt-8 lg:text-7xl"
             >
               Bullying não é brincadeira.
             </motion.h1>
@@ -144,7 +153,7 @@ function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.25, ease: [0.32, 0.72, 0, 1] }}
-              className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground"
+              className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-muted-foreground lg:mt-6 lg:text-lg"
             >
               Cada palavra deixa marca. Aqui você aprende a enxergar, interromper e transformar
               situações de violência dentro da escola.
@@ -153,33 +162,56 @@ function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.4, ease: [0.32, 0.72, 0, 1] }}
-              className="mt-10 flex flex-wrap justify-center gap-3"
+              className="mt-8 flex flex-wrap justify-center gap-3 lg:mt-10"
             >
               <Button asChild size="lg" className="rounded-full px-8">
-                <Link to="/chat">Conversar com IA</Link>
+                <Link to="/chat">🤖 Conversar com IA</Link>
               </Button>
               <Button asChild size="lg" variant="secondary" className="rounded-full px-8">
-                <Link to="/minigames">Minigames</Link>
+                <Link to="/minigames">🎮 Minigames</Link>
               </Button>
             </motion.div>
           </div>
         </section>
 
-        <section id="sobre" className="px-6 py-28">
+        <section aria-label="Atalhos" className="px-4 pb-2 lg:hidden">
+          <ul className="grid grid-cols-2 gap-3">
+            {mobileShortcuts.map((s) => (
+              <li key={s.title}>
+                <Link
+                  to={s.to}
+                  {...(s.hash ? { hash: s.hash } : {})}
+                  className="focus-ring glass block rounded-3xl p-4 transition-transform active:scale-95"
+                >
+                  <span aria-hidden="true" className="text-2xl">
+                    {s.emoji}
+                  </span>
+                  <p className="mt-2 text-sm font-semibold">{s.title}</p>
+                  <p className="text-[11px] text-muted-foreground">{s.text}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section id="sobre" className="px-6 py-14 lg:py-28">
           <SectionTitle
             eyebrow="Sobre o Projeto"
             title="Uma imersão que transforma o olhar"
             subtitle="Conteúdo educativo, linguagem direta e experiências interativas para provocar reflexão real dentro da sala de aula."
           />
-          <div className="mx-auto mt-14 grid max-w-5xl gap-5 md:grid-cols-3">
+          <div className="mx-auto mt-8 grid max-w-5xl gap-4 md:grid-cols-3 lg:mt-14 lg:gap-5">
             {[
-              { Icon: ShieldCheck, t: "Conscientizar", d: "Mostrar o impacto real das agressões." },
-              { Icon: HeartHandshake, t: "Acolher", d: "Ensinar como apoiar quem sofre." },
-              { Icon: AlertTriangle, t: "Agir", d: "Dar caminhos claros de denúncia e mediação." },
+              { Icon: ShieldCheck, e: "🛡️", t: "Conscientizar", d: "Mostrar o impacto real das agressões." },
+              { Icon: HeartHandshake, e: "🤝", t: "Acolher", d: "Ensinar como apoiar quem sofre." },
+              { Icon: AlertTriangle, e: "⚠️", t: "Agir", d: "Dar caminhos claros de denúncia e mediação." },
             ].map((c, i) => (
               <motion.div key={c.t} {...reveal} transition={{ duration: 0.7, delay: i * 0.1 }}>
-                <GlassCard interactive className="h-full p-8">
-                  <c.Icon className="size-6 text-primary" aria-hidden="true" />
+                <GlassCard interactive className="h-full p-6 lg:p-8">
+                  <span aria-hidden="true" className="text-2xl lg:hidden">
+                    {c.e}
+                  </span>
+                  <c.Icon className="hidden size-6 text-primary lg:block" aria-hidden="true" />
                   <h3 className="mt-5 text-xl font-semibold">{c.t}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.d}</p>
                 </GlassCard>
@@ -188,26 +220,31 @@ function HomePage() {
           </div>
         </section>
 
-        <section id="aprender" className="px-6 py-28">
+        <section id="aprender" className="px-6 py-14 lg:py-28">
           <SectionTitle eyebrow="Tipos de Bullying" title="Nem sempre deixa marca visível" />
-          <div className="mx-auto mt-14 grid max-w-6xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mx-auto mt-8 grid max-w-6xl gap-3 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-5">
             {types.map((t, i) => (
               <motion.div key={t.title} {...reveal} transition={{ duration: 0.7, delay: i * 0.06 }}>
-                <GlassCard interactive className="h-full p-7">
-                  <span className="glass inline-flex size-11 items-center justify-center rounded-2xl">
+                <GlassCard interactive className="h-full p-5 lg:p-7">
+                  <span aria-hidden="true" className="text-2xl lg:hidden">
+                    {t.emoji}
+                  </span>
+                  <span className="glass hidden size-11 items-center justify-center rounded-2xl lg:inline-flex">
                     <t.Icon className="size-5 text-primary" aria-hidden="true" />
                   </span>
-                  <h3 className="mt-5 text-lg font-semibold">{t.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t.text}</p>
+                  <h3 className="mt-3 text-base font-semibold lg:mt-5 lg:text-lg">{t.title}</h3>
+                  <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground lg:mt-2 lg:text-sm">
+                    {t.text}
+                  </p>
                 </GlassCard>
               </motion.div>
             ))}
           </div>
         </section>
 
-        <section className="px-6 py-28">
+        <section className="px-6 py-14 lg:py-28">
           <SectionTitle eyebrow="Como Identificar" title="Sinais que pedem atenção" />
-          <GlassCard className="mx-auto mt-14 max-w-3xl p-8">
+          <GlassCard className="mx-auto mt-8 max-w-3xl p-6 lg:mt-14 lg:p-8">
             <ul className="space-y-4">
               {signs.map((s, i) => (
                 <motion.li
@@ -226,12 +263,12 @@ function HomePage() {
           </GlassCard>
         </section>
 
-        <section className="px-6 py-28">
+        <section className="px-6 py-14 lg:py-28">
           <SectionTitle eyebrow="Como Prevenir" title="A prevenção é coletiva" />
-          <div className="mx-auto mt-14 grid max-w-5xl gap-5 sm:grid-cols-2">
+          <div className="mx-auto mt-8 grid max-w-5xl gap-4 sm:grid-cols-2 lg:mt-14 lg:gap-5">
             {prevention.map((p, i) => (
               <motion.div key={p.title} {...reveal} transition={{ duration: 0.7, delay: i * 0.08 }}>
-                <GlassCard interactive className="h-full p-8">
+                <GlassCard interactive className="h-full p-6 lg:p-8">
                   <h3 className="text-lg font-semibold">{p.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.text}</p>
                 </GlassCard>
@@ -240,9 +277,9 @@ function HomePage() {
           </div>
         </section>
 
-        <section className="px-6 py-28">
+        <section className="px-6 py-14 lg:py-28">
           <SectionTitle eyebrow="Como Agir" title="Cinco passos para interromper o ciclo" />
-          <ol className="mx-auto mt-14 max-w-2xl border-l border-border pl-8">
+          <ol className="mx-auto mt-8 max-w-2xl border-l border-border pl-8 lg:mt-14">
             {steps.map((s, i) => (
               <motion.li
                 key={s.title}
@@ -263,13 +300,13 @@ function HomePage() {
           </ol>
         </section>
 
-        <section className="px-6 py-28">
+        <section className="px-6 py-14 lg:py-28">
           <SectionTitle
             eyebrow="Dados Importantes"
             title="Distribuição ilustrativa"
             subtitle="Valores fictícios, usados apenas como exemplo visual em sala de aula."
           />
-          <GlassCard className="mx-auto mt-14 max-w-3xl p-8">
+          <GlassCard className="mx-auto mt-8 max-w-3xl p-6 lg:mt-14 lg:p-8">
             <ul className="space-y-6">
               {stats.map((s, i) => (
                 <li key={s.label}>
@@ -292,9 +329,9 @@ function HomePage() {
           </GlassCard>
         </section>
 
-        <section className="px-6 py-28">
+        <section className="px-6 py-14 lg:py-28">
           <SectionTitle eyebrow="FAQ" title="Perguntas Frequentes" />
-          <GlassCard className="mx-auto mt-14 max-w-3xl p-4 sm:p-8">
+          <GlassCard className="mx-auto mt-8 max-w-3xl p-4 lg:mt-14 lg:p-8">
             <Accordion type="single" collapsible className="w-full">
               {faq.map((f) => (
                 <AccordionItem key={f.q} value={f.q} className="border-border">
@@ -307,9 +344,18 @@ function HomePage() {
             </Accordion>
           </GlassCard>
         </section>
+
+        <section className="px-6 pb-6 text-center lg:hidden">
+          <p className="text-[11px] leading-relaxed text-muted-foreground">
+            🛡️ Imersão Bullying — Realidade não Editada
+            <br />© {new Date().getFullYear()} Projeto educativo escolar.
+          </p>
+        </section>
+        <MobileTabBarSpacer />
       </main>
 
       <Footer />
+      <MobileTabBar />
     </PageTransition>
   );
 }
