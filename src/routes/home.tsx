@@ -200,15 +200,18 @@ function HomePage() {
             title="Uma imersão que transforma o olhar"
             subtitle="Conteúdo educativo, linguagem direta e experiências interativas para provocar reflexão real dentro da sala de aula."
           />
-          <div className="mx-auto mt-14 grid max-w-5xl gap-5 md:grid-cols-3">
+          <div className="mx-auto mt-8 grid max-w-5xl gap-4 md:grid-cols-3 lg:mt-14 lg:gap-5">
             {[
-              { Icon: ShieldCheck, t: "Conscientizar", d: "Mostrar o impacto real das agressões." },
-              { Icon: HeartHandshake, t: "Acolher", d: "Ensinar como apoiar quem sofre." },
-              { Icon: AlertTriangle, t: "Agir", d: "Dar caminhos claros de denúncia e mediação." },
+              { Icon: ShieldCheck, e: "🛡️", t: "Conscientizar", d: "Mostrar o impacto real das agressões." },
+              { Icon: HeartHandshake, e: "🤝", t: "Acolher", d: "Ensinar como apoiar quem sofre." },
+              { Icon: AlertTriangle, e: "⚠️", t: "Agir", d: "Dar caminhos claros de denúncia e mediação." },
             ].map((c, i) => (
               <motion.div key={c.t} {...reveal} transition={{ duration: 0.7, delay: i * 0.1 }}>
-                <GlassCard interactive className="h-full p-8">
-                  <c.Icon className="size-6 text-primary" aria-hidden="true" />
+                <GlassCard interactive className="h-full p-6 lg:p-8">
+                  <span aria-hidden="true" className="text-2xl lg:hidden">
+                    {c.e}
+                  </span>
+                  <c.Icon className="hidden size-6 text-primary lg:block" aria-hidden="true" />
                   <h3 className="mt-5 text-xl font-semibold">{c.t}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.d}</p>
                 </GlassCard>
@@ -217,17 +220,22 @@ function HomePage() {
           </div>
         </section>
 
-        <section id="aprender" className="px-6 py-28">
+        <section id="aprender" className="px-6 py-14 lg:py-28">
           <SectionTitle eyebrow="Tipos de Bullying" title="Nem sempre deixa marca visível" />
-          <div className="mx-auto mt-14 grid max-w-6xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mx-auto mt-8 grid max-w-6xl gap-3 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-5">
             {types.map((t, i) => (
               <motion.div key={t.title} {...reveal} transition={{ duration: 0.7, delay: i * 0.06 }}>
-                <GlassCard interactive className="h-full p-7">
-                  <span className="glass inline-flex size-11 items-center justify-center rounded-2xl">
+                <GlassCard interactive className="h-full p-5 lg:p-7">
+                  <span aria-hidden="true" className="text-2xl lg:hidden">
+                    {t.emoji}
+                  </span>
+                  <span className="glass hidden size-11 items-center justify-center rounded-2xl lg:inline-flex">
                     <t.Icon className="size-5 text-primary" aria-hidden="true" />
                   </span>
-                  <h3 className="mt-5 text-lg font-semibold">{t.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t.text}</p>
+                  <h3 className="mt-3 text-base font-semibold lg:mt-5 lg:text-lg">{t.title}</h3>
+                  <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground lg:mt-2 lg:text-sm">
+                    {t.text}
+                  </p>
                 </GlassCard>
               </motion.div>
             ))}
