@@ -542,7 +542,7 @@ function MinigamesPage() {
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 exit={{ scale: 0.96, opacity: 0 }}
                 transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-                className="glass max-h-[92dvh] w-full max-w-xl overflow-y-auto rounded-3xl p-5 sm:p-7"
+                className="glass max-h-[92dvh] w-full max-w-xl overflow-y-auto rounded-3xl p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:p-7"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>

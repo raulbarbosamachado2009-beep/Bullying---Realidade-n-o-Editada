@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowUp, Bot, Square, User } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { PageTransition } from "@/components/PageTransition";
+import { MobileTabBar, MobileTopBar } from "@/components/MobileShell";
 
 export const Route = createFileRoute("/chat")({
   head: () => ({
@@ -35,10 +36,10 @@ const initialMessages: Message[] = [
 ];
 
 const suggestions = [
-  "O que é bullying?",
-  "Como identificar sinais?",
-  "Como denunciar na escola?",
-  "Como apoiar uma vítima?",
+  { emoji: "❓", text: "O que é bullying?" },
+  { emoji: "🔍", text: "Como identificar sinais?" },
+  { emoji: "🏫", text: "Como denunciar na escola?" },
+  { emoji: "🤝", text: "Como apoiar uma vítima?" },
 ];
 
 function ChatPage() {
@@ -196,13 +197,16 @@ function ChatPage() {
       <div className="mt-3 flex flex-wrap justify-center gap-2">
         {suggestions.map((s) => (
           <button
-            key={s}
+            key={s.text}
             type="button"
-            onClick={() => void send(s)}
+            onClick={() => void send(s.text)}
             disabled={loading}
-            className="focus-ring glass rounded-full px-4 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            className="focus-ring glass rounded-full px-3.5 py-2 text-xs text-muted-foreground transition-all hover:text-foreground active:scale-95"
           >
-            {s}
+            <span aria-hidden="true" className="mr-1 lg:hidden">
+              {s.emoji}
+            </span>
+            {s.text}
           </button>
         ))}
       </div>
