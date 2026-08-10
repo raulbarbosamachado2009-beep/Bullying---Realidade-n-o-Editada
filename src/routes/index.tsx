@@ -100,7 +100,7 @@ function Wizard() {
   return (
     <>
       <AnimatedBackground />
-      <main className="relative flex h-dvh flex-col items-center justify-center overflow-hidden px-4 py-16 sm:px-6">
+      <main className="relative flex h-dvh flex-col items-center justify-center overflow-hidden px-4 pb-[max(4rem,env(safe-area-inset-bottom))] pt-[max(3rem,env(safe-area-inset-top))] sm:px-6 sm:py-16">
         <AnimatePresence mode="wait">
           {step === 0 ? <Welcome key="s0" onNext={() => setStep(1)} /> : null}
           {step === 1 ? <Topics key="s1" onNext={() => setStep(2)} /> : null}
@@ -108,7 +108,10 @@ function Wizard() {
           {step === 3 ? <LoginStep key="s3" /> : null}
         </AnimatePresence>
 
-        <nav aria-label="Progresso" className="absolute bottom-4 flex gap-2 sm:bottom-6">
+        <nav
+          aria-label="Progresso"
+          className="absolute bottom-[max(1rem,env(safe-area-inset-bottom))] flex gap-2 sm:bottom-6"
+        >
           {[0, 1, 2, 3].map((i) => (
             <span
               key={i}
