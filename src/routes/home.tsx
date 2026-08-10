@@ -125,11 +125,12 @@ function HomePage() {
     <PageTransition>
       <AnimatedBackground />
       <Navbar />
+      <MobileTopBar emoji="🛡️" title="Imersão Bullying" subtitle="Realidade não Editada" />
 
-      <main>
+      <main className="pt-14 lg:pt-0">
         <section
           id="inicio"
-          className="relative flex min-h-dvh items-center justify-center px-6 pt-32 text-center"
+          className="relative flex min-h-[78dvh] items-center justify-center px-6 pt-10 text-center lg:min-h-dvh lg:pt-32"
         >
           <div className="mx-auto max-w-3xl">
             <motion.p
@@ -144,7 +145,7 @@ function HomePage() {
               initial={{ opacity: 0, y: 30, filter: "blur(12px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 1, delay: 0.1, ease: [0.32, 0.72, 0, 1] }}
-              className="mt-8 text-5xl font-semibold leading-[1.05] text-gradient sm:text-7xl"
+              className="mt-6 text-4xl font-semibold leading-[1.05] text-gradient sm:text-7xl lg:mt-8 lg:text-7xl"
             >
               Bullying não é brincadeira.
             </motion.h1>
@@ -152,7 +153,7 @@ function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.25, ease: [0.32, 0.72, 0, 1] }}
-              className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground"
+              className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-muted-foreground lg:mt-6 lg:text-lg"
             >
               Cada palavra deixa marca. Aqui você aprende a enxergar, interromper e transformar
               situações de violência dentro da escola.
@@ -161,19 +162,39 @@ function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.4, ease: [0.32, 0.72, 0, 1] }}
-              className="mt-10 flex flex-wrap justify-center gap-3"
+              className="mt-8 flex flex-wrap justify-center gap-3 lg:mt-10"
             >
               <Button asChild size="lg" className="rounded-full px-8">
-                <Link to="/chat">Conversar com IA</Link>
+                <Link to="/chat">🤖 Conversar com IA</Link>
               </Button>
               <Button asChild size="lg" variant="secondary" className="rounded-full px-8">
-                <Link to="/minigames">Minigames</Link>
+                <Link to="/minigames">🎮 Minigames</Link>
               </Button>
             </motion.div>
           </div>
         </section>
 
-        <section id="sobre" className="px-6 py-28">
+        <section aria-label="Atalhos" className="px-4 pb-2 lg:hidden">
+          <ul className="grid grid-cols-2 gap-3">
+            {mobileShortcuts.map((s) => (
+              <li key={s.title}>
+                <Link
+                  to={s.to}
+                  {...(s.hash ? { hash: s.hash } : {})}
+                  className="focus-ring glass block rounded-3xl p-4 transition-transform active:scale-95"
+                >
+                  <span aria-hidden="true" className="text-2xl">
+                    {s.emoji}
+                  </span>
+                  <p className="mt-2 text-sm font-semibold">{s.title}</p>
+                  <p className="text-[11px] text-muted-foreground">{s.text}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section id="sobre" className="px-6 py-14 lg:py-28">
           <SectionTitle
             eyebrow="Sobre o Projeto"
             title="Uma imersão que transforma o olhar"
