@@ -3,7 +3,7 @@ import { Instagram, Youtube, Twitter, ShieldCheck } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer id="contato" className="border-t border-border/60 px-6 py-16">
+    <footer id="contato" className="hidden border-t border-border/60 px-6 py-16 lg:block">
       <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-3">
         <div>
           <p className="flex items-center gap-2 text-base font-semibold">

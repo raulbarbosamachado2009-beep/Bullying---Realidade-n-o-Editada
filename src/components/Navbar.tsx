@@ -21,7 +21,7 @@ export function Navbar() {
       initial={{ y: -32, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
-      className="fixed inset-x-0 top-0 z-50 px-4 pt-4"
+      className="fixed inset-x-0 top-0 z-50 hidden px-4 pt-4 lg:block"
     >
       <nav
         aria-label="Navegação principal"
