@@ -242,9 +242,9 @@ function HomePage() {
           </div>
         </section>
 
-        <section className="px-6 py-28">
+        <section className="px-6 py-14 lg:py-28">
           <SectionTitle eyebrow="Como Identificar" title="Sinais que pedem atenção" />
-          <GlassCard className="mx-auto mt-14 max-w-3xl p-8">
+          <GlassCard className="mx-auto mt-8 max-w-3xl p-6 lg:mt-14 lg:p-8">
             <ul className="space-y-4">
               {signs.map((s, i) => (
                 <motion.li
@@ -263,12 +263,12 @@ function HomePage() {
           </GlassCard>
         </section>
 
-        <section className="px-6 py-28">
+        <section className="px-6 py-14 lg:py-28">
           <SectionTitle eyebrow="Como Prevenir" title="A prevenção é coletiva" />
-          <div className="mx-auto mt-14 grid max-w-5xl gap-5 sm:grid-cols-2">
+          <div className="mx-auto mt-8 grid max-w-5xl gap-4 sm:grid-cols-2 lg:mt-14 lg:gap-5">
             {prevention.map((p, i) => (
               <motion.div key={p.title} {...reveal} transition={{ duration: 0.7, delay: i * 0.08 }}>
-                <GlassCard interactive className="h-full p-8">
+                <GlassCard interactive className="h-full p-6 lg:p-8">
                   <h3 className="text-lg font-semibold">{p.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.text}</p>
                 </GlassCard>
@@ -277,9 +277,9 @@ function HomePage() {
           </div>
         </section>
 
-        <section className="px-6 py-28">
+        <section className="px-6 py-14 lg:py-28">
           <SectionTitle eyebrow="Como Agir" title="Cinco passos para interromper o ciclo" />
-          <ol className="mx-auto mt-14 max-w-2xl border-l border-border pl-8">
+          <ol className="mx-auto mt-8 max-w-2xl border-l border-border pl-8 lg:mt-14">
             {steps.map((s, i) => (
               <motion.li
                 key={s.title}
@@ -300,13 +300,13 @@ function HomePage() {
           </ol>
         </section>
 
-        <section className="px-6 py-28">
+        <section className="px-6 py-14 lg:py-28">
           <SectionTitle
             eyebrow="Dados Importantes"
             title="Distribuição ilustrativa"
             subtitle="Valores fictícios, usados apenas como exemplo visual em sala de aula."
           />
-          <GlassCard className="mx-auto mt-14 max-w-3xl p-8">
+          <GlassCard className="mx-auto mt-8 max-w-3xl p-6 lg:mt-14 lg:p-8">
             <ul className="space-y-6">
               {stats.map((s, i) => (
                 <li key={s.label}>
@@ -329,9 +329,9 @@ function HomePage() {
           </GlassCard>
         </section>
 
-        <section className="px-6 py-28">
+        <section id="contato" className="px-6 py-14 lg:py-28">
           <SectionTitle eyebrow="FAQ" title="Perguntas Frequentes" />
-          <GlassCard className="mx-auto mt-14 max-w-3xl p-4 sm:p-8">
+          <GlassCard className="mx-auto mt-8 max-w-3xl p-4 lg:mt-14 lg:p-8">
             <Accordion type="single" collapsible className="w-full">
               {faq.map((f) => (
                 <AccordionItem key={f.q} value={f.q} className="border-border">
@@ -344,9 +344,18 @@ function HomePage() {
             </Accordion>
           </GlassCard>
         </section>
+
+        <section className="px-6 pb-6 text-center lg:hidden">
+          <p className="text-[11px] leading-relaxed text-muted-foreground">
+            🛡️ Imersão Bullying — Realidade não Editada
+            <br />© {new Date().getFullYear()} Projeto educativo escolar.
+          </p>
+        </section>
+        <MobileTabBarSpacer />
       </main>
 
       <Footer />
+      <MobileTabBar />
     </PageTransition>
   );
 }
