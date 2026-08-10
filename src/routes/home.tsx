@@ -17,6 +17,7 @@ import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { Footer } from "@/components/Footer";
 import { GlassCard } from "@/components/GlassCard";
 import { Navbar } from "@/components/Navbar";
+import { MobileTabBar, MobileTabBarSpacer, MobileTopBar } from "@/components/MobileShell";
 import { PageTransition } from "@/components/PageTransition";
 import { SectionTitle } from "@/components/SectionTitle";
 import { Button } from "@/components/ui/button";
@@ -47,13 +48,20 @@ export const Route = createFileRoute("/home")({
 });
 
 const types = [
-  { Icon: Zap, title: "Físico", text: "Empurrões, chutes, agressões e danos a pertences." },
-  { Icon: MessageSquare, title: "Verbal", text: "Apelidos, xingamentos, humilhações e ameaças." },
-  { Icon: Brain, title: "Psicológico", text: "Chantagem, manipulação, intimidação e perseguição." },
-  { Icon: Globe, title: "Virtual", text: "Cyberbullying: exposição e ataques em redes e grupos." },
-  { Icon: Users, title: "Social", text: "Exclusão deliberada, boatos e isolamento do grupo." },
-  { Icon: Sparkle, title: "Racial", text: "Ofensas relacionadas a raça, cor, etnia ou origem." },
-  { Icon: Landmark, title: "Religioso", text: "Zombarias e discriminação por crença ou fé." },
+  { Icon: Zap, emoji: "💥", title: "Físico", text: "Empurrões, chutes, agressões e danos a pertences." },
+  { Icon: MessageSquare, emoji: "🗯️", title: "Verbal", text: "Apelidos, xingamentos, humilhações e ameaças." },
+  { Icon: Brain, emoji: "🧠", title: "Psicológico", text: "Chantagem, manipulação, intimidação e perseguição." },
+  { Icon: Globe, emoji: "📱", title: "Virtual", text: "Cyberbullying: exposição e ataques em redes e grupos." },
+  { Icon: Users, emoji: "🚷", title: "Social", text: "Exclusão deliberada, boatos e isolamento do grupo." },
+  { Icon: Sparkle, emoji: "✊🏾", title: "Racial", text: "Ofensas relacionadas a raça, cor, etnia ou origem." },
+  { Icon: Landmark, emoji: "🕊️", title: "Religioso", text: "Zombarias e discriminação por crença ou fé." },
+];
+
+const mobileShortcuts = [
+  { to: "/minigames" as const, emoji: "🎮", title: "Minigames", text: "6 desafios rápidos" },
+  { to: "/chat" as const, emoji: "🤖", title: "IA Educativa", text: "Tire suas dúvidas" },
+  { to: "/home" as const, hash: "aprender", emoji: "📚", title: "Aprender", text: "Tipos e sinais" },
+  { to: "/" as const, emoji: "🔄", title: "Recomeçar", text: "Refazer a imersão" },
 ];
 
 const signs = [
