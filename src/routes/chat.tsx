@@ -217,8 +217,9 @@ function ChatPage() {
     return (
       <PageTransition>
         <AnimatedBackground />
-        <div className="flex min-h-dvh flex-col">
-          <header className="flex items-center gap-3 px-5 py-5">
+        <MobileTopBar emoji="🤖" title="IA Educativa" subtitle="Assistente sobre bullying" backTo="/home" />
+        <div className="flex min-h-dvh flex-col pt-14 lg:pt-0">
+          <header className="hidden items-center gap-3 px-5 py-5 lg:flex">
             <Link
               to="/home"
               aria-label="Voltar para a home"
@@ -228,14 +229,19 @@ function ChatPage() {
             </Link>
           </header>
 
-          <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center px-4 pb-10">
+          <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center px-4 pb-28 lg:pb-10">
             <motion.div
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
               className="w-full text-center"
             >
-              <h1 className="text-gradient text-3xl font-semibold sm:text-5xl">IA Educativa</h1>
+              <h1 className="text-gradient text-3xl font-semibold sm:text-5xl">
+                <span aria-hidden="true" className="mr-2 lg:hidden">
+                  🤖
+                </span>
+                IA Educativa
+              </h1>
               <p className="mx-auto mt-3 max-w-lg text-sm text-muted-foreground sm:text-base">
                 Assistente educacional sobre bullying: entenda os tipos, reconheça sinais de alerta,
                 saiba como agir, apoiar e denunciar com segurança.
@@ -244,6 +250,7 @@ function ChatPage() {
             </motion.div>
           </main>
         </div>
+        <MobileTabBar />
       </PageTransition>
     );
   }
@@ -251,8 +258,9 @@ function ChatPage() {
   return (
     <PageTransition>
       <AnimatedBackground />
-      <div className="flex min-h-dvh flex-col">
-        <header className="flex items-center gap-3 px-5 py-5">
+      <MobileTopBar emoji="🤖" title="IA Educativa" subtitle="Assistente sobre bullying" backTo="/home" />
+      <div className="flex min-h-dvh flex-col pt-14 lg:pt-0">
+        <header className="hidden items-center gap-3 px-5 py-5 lg:flex">
           <Link
             to="/home"
             aria-label="Voltar para a home"
@@ -266,7 +274,7 @@ function ChatPage() {
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-3xl flex-1 px-4 pb-56 sm:pb-52">
+        <main className="mx-auto w-full max-w-3xl flex-1 px-4 pb-64 sm:pb-52">
           <div className="space-y-6 py-6" role="log" aria-live="polite">
             <AnimatePresence initial={false}>
               {messages.map((m) => (
@@ -307,10 +315,11 @@ function ChatPage() {
           </div>
         </main>
 
-        <div className="fixed inset-x-0 bottom-0 z-40 bg-gradient-to-t from-background via-background/90 to-transparent px-4 pb-4 pt-6">
+        <div className="fixed inset-x-0 bottom-[68px] z-40 bg-gradient-to-t from-background via-background/90 to-transparent px-4 pb-3 pt-6 lg:bottom-0 lg:pb-4">
           <div className="mx-auto w-full max-w-3xl">{composer}</div>
         </div>
       </div>
+      <MobileTabBar />
     </PageTransition>
   );
 }
