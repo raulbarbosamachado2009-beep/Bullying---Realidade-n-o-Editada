@@ -14,6 +14,7 @@ import { useState } from "react";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { GlassCard } from "@/components/GlassCard";
 import { Navbar } from "@/components/Navbar";
+import { MobileTabBar, MobileTabBarSpacer, MobileTopBar } from "@/components/MobileShell";
 import { PageTransition } from "@/components/PageTransition";
 import { SectionTitle } from "@/components/SectionTitle";
 import { Button } from "@/components/ui/button";
@@ -72,6 +73,15 @@ type Game =
       Icon: typeof Brain;
       rounds: ScaleRound[];
     };
+
+const gameEmoji: Record<string, string> = {
+  quiz: "🧠",
+  tf: "✅",
+  attitude: "⚖️",
+  order: "🔢",
+  scale: "🌡️",
+  scenario: "✍️",
+};
 
 const games: Game[] = [
   {
