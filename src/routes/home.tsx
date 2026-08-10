@@ -329,7 +329,7 @@ function HomePage() {
           </GlassCard>
         </section>
 
-        <section id="contato" className="px-6 py-14 lg:py-28">
+        <section className="px-6 py-14 lg:py-28">
           <SectionTitle eyebrow="FAQ" title="Perguntas Frequentes" />
           <GlassCard className="mx-auto mt-8 max-w-3xl p-4 lg:mt-14 lg:p-8">
             <Accordion type="single" collapsible className="w-full">
