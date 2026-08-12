@@ -181,21 +181,20 @@ function TypeCarouselModal({ types }: { types: BullyingType[] }) {
                 </p>
               </div>
 
-              <div className="relative min-h-[220px]">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: 40 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -40 }}
-                    transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
-                    className="flex flex-col items-center text-center"
-                  >
-                    <span className="text-5xl">{types[idx]!.emoji}</span>
-                    <h3 className="mt-4 text-2xl font-semibold">{types[idx]!.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{types[idx]!.text}</p>
-                  </motion.div>
-                </AnimatePresence>
+              <div className="min-h-[220px]">
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, x: 40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+                  className="flex flex-col items-center text-center"
+                >
+                  <span className="text-5xl" aria-hidden="true">
+                    {types[idx]!.emoji}
+                  </span>
+                  <h3 className="mt-4 text-2xl font-semibold">{types[idx]!.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{types[idx]!.text}</p>
+                </motion.div>
               </div>
 
               <div className="mt-6 flex items-center justify-between gap-4">
