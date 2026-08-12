@@ -182,19 +182,13 @@ function TypeCarouselModal({ types }: { types: BullyingType[] }) {
               </div>
 
               <div className="min-h-[220px]">
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, x: 40 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-                  className="flex flex-col items-center text-center"
-                >
+                <div className="flex flex-col items-center text-center">
                   <span className="text-5xl" aria-hidden="true">
                     {types[idx]!.emoji}
                   </span>
                   <h3 className="mt-4 text-2xl font-semibold">{types[idx]!.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{types[idx]!.text}</p>
-                </motion.div>
+                </div>
               </div>
 
               <div className="mt-6 flex items-center justify-between gap-4">
