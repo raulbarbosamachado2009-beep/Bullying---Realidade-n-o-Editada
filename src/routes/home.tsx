@@ -124,6 +124,114 @@ const reveal = {
   viewport: { once: true, margin: "-60px" },
 };
 
+function TypeCarouselModal({ types }: { types: typeof import("./home").types }) {
+  const [open, setOpen] = useState(false);
+  const [idx, setIdx] = useState(0);
+
+  const next = () => setIdx((i) => (i + 1) % types.length);
+  const prev = () => setIdx((i) => (i - 1 + types.length) % types.length);
+
+  return (
+    <>
+      <motion.button
+        {...reveal}
+        onClick={() => setOpen(true)}
+        className="focus-ring glass w-full rounded-3xl px-6 py-5 text-left active:scale-[0.98]"
+      >
+        <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Tipos de Bullying</span>
+        <div className="mt-2 flex items-center justify-between">
+          <span className="text-base font-semibold">Ver Tipos de Bullying</span>
+          <span className="inline-flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
+            <ChevronRight className="size-4" aria-hidden="true" />
+          </span>
+        </div>
+      </motion.button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-6 backdrop-blur-sm"
+            onClick={() => setOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-sm overflow-hidden rounded-[2rem] bg-card p-6 shadow-2xl"
+            >
+              <button
+                onClick={() => setOpen(false)}
+                aria-label="Fechar"
+                className="focus-ring absolute right-4 top-4 inline-flex size-8 items-center justify-center rounded-full bg-white/10 text-muted-foreground transition-colors active:bg-white/20"
+              >
+                <X className="size-4" />
+              </button>
+
+              <div className="mb-4 text-center">
+                <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Tipos de Bullying</span>
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  {idx + 1} de {types.length}
+                </p>
+              </div>
+
+              <div className="relative min-h-[220px]">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -40 }}
+                    transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
+                    className="flex flex-col items-center text-center"
+                  >
+                    <span className="text-5xl">{types[idx].emoji}</span>
+                    <h3 className="mt-4 text-2xl font-semibold">{types[idx].title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{types[idx].text}</p>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              <div className="mt-6 flex items-center justify-between gap-4">
+                <button
+                  onClick={prev}
+                  aria-label="Tipo anterior"
+                  className="focus-ring inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-foreground transition-colors active:bg-white/20"
+                >
+                  <ChevronLeft className="size-5" />
+                </button>
+
+                <div className="flex gap-1.5">
+                  {types.map((_, i) => (
+                    <span
+                      key={i}
+                      className={`block h-1.5 rounded-full transition-all ${
+                        i === idx ? "w-4 bg-primary" : "w-1.5 bg-white/25"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                <button
+                  onClick={next}
+                  aria-label="Próximo tipo"
+                  className="focus-ring inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-foreground transition-colors active:bg-white/20"
+                >
+                  <ChevronRight className="size-5" />
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
 function HomePage() {
   return (
     <PageTransition>
