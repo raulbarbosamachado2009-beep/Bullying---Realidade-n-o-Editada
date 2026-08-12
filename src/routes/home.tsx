@@ -149,23 +149,15 @@ function TypeCarouselModal({ types }: { types: BullyingType[] }) {
         </div>
       </motion.button>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-6 backdrop-blur-sm"
-            onClick={() => setOpen(false)}
+      {open && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-6 backdrop-blur-sm"
+          onClick={() => setOpen(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-sm overflow-hidden rounded-[2rem] bg-card p-6 shadow-2xl"
           >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-sm overflow-hidden rounded-[2rem] bg-card p-6 shadow-2xl"
-            >
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Fechar"
