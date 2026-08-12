@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowUp, Bot, Square, User } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { PageTransition } from "@/components/PageTransition";
-import { MobileTabBar, MobileTopBar } from "@/components/MobileShell";
+import { MobileTopBar } from "@/components/MobileShell";
 
 export const Route = createFileRoute("/chat")({
   head: () => ({
@@ -149,6 +149,7 @@ function ChatPage() {
         </p>
       ) : null}
 
+      <div className="flex flex-col-reverse gap-3 lg:flex-col">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -194,7 +195,7 @@ function ChatPage() {
         )}
       </form>
 
-      <div className="mt-3 flex flex-wrap justify-center gap-2">
+      <div className="flex flex-wrap justify-center gap-2">
         {suggestions.map((s) => (
           <button
             key={s.text}
@@ -209,6 +210,7 @@ function ChatPage() {
             {s.text}
           </button>
         ))}
+      </div>
       </div>
     </div>
   );
@@ -229,7 +231,7 @@ function ChatPage() {
             </Link>
           </header>
 
-          <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center px-4 pb-28 lg:pb-10">
+          <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center px-4 pb-10">
             <motion.div
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
@@ -250,7 +252,6 @@ function ChatPage() {
             </motion.div>
           </main>
         </div>
-        <MobileTabBar />
       </PageTransition>
     );
   }
@@ -274,7 +275,7 @@ function ChatPage() {
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-3xl flex-1 px-4 pb-64 sm:pb-52">
+        <main className="mx-auto w-full max-w-3xl flex-1 px-4 pb-56 sm:pb-52">
           <div className="space-y-6 py-6" role="log" aria-live="polite">
             <AnimatePresence initial={false}>
               {messages.map((m) => (
@@ -315,11 +316,10 @@ function ChatPage() {
           </div>
         </main>
 
-        <div className="fixed inset-x-0 bottom-[68px] z-40 bg-gradient-to-t from-background via-background/90 to-transparent px-4 pb-3 pt-6 lg:bottom-0 lg:pb-4">
+        <div className="fixed inset-x-0 bottom-0 z-40 bg-gradient-to-t from-background via-background/90 to-transparent px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-6 lg:pb-4">
           <div className="mx-auto w-full max-w-3xl">{composer}</div>
         </div>
       </div>
-      <MobileTabBar />
     </PageTransition>
   );
 }
