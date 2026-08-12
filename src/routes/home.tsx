@@ -211,10 +211,9 @@ function TypeCarouselModal({ types }: { types: BullyingType[] }) {
                   <ChevronRight className="size-5" />
                 </button>
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
     </>
   );
 }
