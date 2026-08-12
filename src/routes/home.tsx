@@ -226,14 +226,18 @@ function HomePage() {
 
         <section id="aprender" className="px-6 py-14 lg:py-28">
           <SectionTitle eyebrow="Tipos de Bullying" title="Nem sempre deixa marca visível" />
-          <div className="mx-auto mt-8 grid max-w-6xl gap-3 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-5">
+
+          {/* Mobile: single CTA that opens a carousel modal */}
+          <div className="mx-auto mt-8 max-w-md lg:hidden">
+            <TypeCarouselModal types={types} />
+          </div>
+
+          {/* Desktop: keep the original grid */}
+          <div className="mx-auto mt-8 hidden max-w-6xl gap-3 sm:grid-cols-2 lg:mt-14 lg:grid lg:grid-cols-3 lg:gap-5">
             {types.map((t, i) => (
               <motion.div key={t.title} {...reveal} transition={{ duration: 0.7, delay: i * 0.06 }}>
                 <GlassCard interactive className="h-full p-5 lg:p-7">
-                  <span aria-hidden="true" className="text-2xl lg:hidden">
-                    {t.emoji}
-                  </span>
-                  <span className="glass hidden size-11 items-center justify-center rounded-2xl lg:inline-flex">
+                  <span className="glass inline-flex size-11 items-center justify-center rounded-2xl">
                     <t.Icon className="size-5 text-primary" aria-hidden="true" />
                   </span>
                   <h3 className="mt-3 text-base font-semibold lg:mt-5 lg:text-lg">{t.title}</h3>
