@@ -1,14 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
+import { useState } from "react";
 import {
   AlertTriangle,
   Check,
+  ChevronLeft,
+  ChevronRight,
   Globe,
   HeartHandshake,
   Landmark,
   MessageSquare,
   Sparkle,
   Users,
+  X,
   Zap,
   Brain,
   ShieldCheck,
@@ -120,6 +124,100 @@ const reveal = {
   viewport: { once: true, margin: "-60px" },
 };
 
+type BullyingType = { Icon: React.ElementType; emoji: string; title: string; text: string };
+
+function TypeCarouselModal({ types }: { types: BullyingType[] }) {
+  const [open, setOpen] = useState(false);
+  const [idx, setIdx] = useState(0);
+
+  const next = () => setIdx((i) => (i + 1) % types.length);
+  const prev = () => setIdx((i) => (i - 1 + types.length) % types.length);
+
+  return (
+    <>
+      <motion.button
+        {...reveal}
+        onClick={() => setOpen(true)}
+        className="focus-ring glass w-full rounded-3xl px-6 py-5 text-left active:scale-[0.98]"
+      >
+        <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Tipos de Bullying</span>
+        <div className="mt-2 flex items-center justify-between">
+          <span className="text-base font-semibold">Ver Tipos de Bullying</span>
+          <span className="inline-flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
+            <ChevronRight className="size-4" aria-hidden="true" />
+          </span>
+        </div>
+      </motion.button>
+
+      {open && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-6 backdrop-blur-sm"
+          onClick={() => setOpen(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-sm overflow-hidden rounded-[2rem] bg-card p-6 shadow-2xl"
+          >
+              <button
+                onClick={() => setOpen(false)}
+                aria-label="Fechar"
+                className="focus-ring absolute right-4 top-4 inline-flex size-8 items-center justify-center rounded-full bg-white/10 text-muted-foreground transition-colors active:bg-white/20"
+              >
+                <X className="size-4" />
+              </button>
+
+              <div className="mb-4 text-center">
+                <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Tipos de Bullying</span>
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  {idx + 1} de {types.length}
+                </p>
+              </div>
+
+              <div className="min-h-[220px]">
+                <div className="flex flex-col items-center text-center">
+                  <span className="text-5xl" aria-hidden="true">
+                    {types[idx]!.emoji}
+                  </span>
+                  <h3 className="mt-4 text-2xl font-semibold">{types[idx]!.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{types[idx]!.text}</p>
+                </div>
+              </div>
+
+              <div className="mt-6 flex items-center justify-between gap-4">
+                <button
+                  onClick={prev}
+                  aria-label="Tipo anterior"
+                  className="focus-ring inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-foreground transition-colors active:bg-white/20"
+                >
+                  <ChevronLeft className="size-5" />
+                </button>
+
+                <div className="flex gap-1.5">
+                  {types.map((_, i) => (
+                    <span
+                      key={i}
+                      className={`block h-1.5 rounded-full transition-all ${
+                        i === idx ? "w-4 bg-primary" : "w-1.5 bg-white/25"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                <button
+                  onClick={next}
+                  aria-label="Próximo tipo"
+                  className="focus-ring inline-flex size-11 items-center justify-center rounded-full bg-white/10 text-foreground transition-colors active:bg-white/20"
+                >
+                  <ChevronRight className="size-5" />
+                </button>
+              </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 function HomePage() {
   return (
     <PageTransition>
@@ -222,14 +320,18 @@ function HomePage() {
 
         <section id="aprender" className="px-6 py-14 lg:py-28">
           <SectionTitle eyebrow="Tipos de Bullying" title="Nem sempre deixa marca visível" />
-          <div className="mx-auto mt-8 grid max-w-6xl gap-3 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-5">
+
+          {/* Mobile: single CTA that opens a carousel modal */}
+          <div className="mx-auto mt-8 max-w-md lg:hidden">
+            <TypeCarouselModal types={types} />
+          </div>
+
+          {/* Desktop: keep the original grid */}
+          <div className="mx-auto mt-8 hidden max-w-6xl gap-3 sm:grid-cols-2 lg:mt-14 lg:grid lg:grid-cols-3 lg:gap-5">
             {types.map((t, i) => (
               <motion.div key={t.title} {...reveal} transition={{ duration: 0.7, delay: i * 0.06 }}>
                 <GlassCard interactive className="h-full p-5 lg:p-7">
-                  <span aria-hidden="true" className="text-2xl lg:hidden">
-                    {t.emoji}
-                  </span>
-                  <span className="glass hidden size-11 items-center justify-center rounded-2xl lg:inline-flex">
+                  <span className="glass inline-flex size-11 items-center justify-center rounded-2xl">
                     <t.Icon className="size-5 text-primary" aria-hidden="true" />
                   </span>
                   <h3 className="mt-3 text-base font-semibold lg:mt-5 lg:text-lg">{t.title}</h3>
