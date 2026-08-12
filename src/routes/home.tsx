@@ -124,7 +124,9 @@ const reveal = {
   viewport: { once: true, margin: "-60px" },
 };
 
-function TypeCarouselModal({ types }: { types: typeof import("./home").types }) {
+type BullyingType = { Icon: React.ElementType; emoji: string; title: string; text: string };
+
+function TypeCarouselModal({ types }: { types: BullyingType[] }) {
   const [open, setOpen] = useState(false);
   const [idx, setIdx] = useState(0);
 
