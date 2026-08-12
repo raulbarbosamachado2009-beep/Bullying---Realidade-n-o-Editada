@@ -64,18 +64,18 @@ export function MobileTabBar() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
       aria-label="Navegação do app"
-      className="fixed inset-x-0 bottom-0 z-50 lg:hidden"
+      className="fixed bottom-0 left-0 right-0 z-50 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 lg:hidden"
     >
-      <ul className="glass grid grid-cols-4 rounded-none border-x-0 border-b-0 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
+      <ul className="glass grid grid-cols-4 rounded-3xl border px-2 pt-2 shadow-2xl">
         {tabs.map((t) => (
           <li key={t.to}>
             <Link
               to={t.to}
               activeOptions={{ exact: true }}
               activeProps={{ "data-active": "true" }}
-              className="focus-ring group flex flex-col items-center gap-0.5 rounded-2xl py-1.5 text-muted-foreground transition-colors data-[active=true]:text-primary"
+              className="focus-ring group flex flex-col items-center gap-0.5 rounded-2xl py-2 text-muted-foreground transition-colors data-[active=true]:text-primary"
             >
-              <span aria-hidden="true" className="text-[20px] leading-none transition-transform group-active:scale-90">
+              <span aria-hidden="true" className="text-[22px] leading-none transition-transform group-active:scale-90">
                 {t.emoji}
               </span>
               <span className="text-[10px] font-medium">{t.label}</span>

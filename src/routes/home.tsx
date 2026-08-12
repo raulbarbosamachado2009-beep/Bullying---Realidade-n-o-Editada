@@ -1,14 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
+import { useState } from "react";
 import {
   AlertTriangle,
   Check,
+  ChevronLeft,
+  ChevronRight,
   Globe,
   HeartHandshake,
   Landmark,
   MessageSquare,
   Sparkle,
   Users,
+  X,
   Zap,
   Brain,
   ShieldCheck,
