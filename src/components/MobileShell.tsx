@@ -6,7 +6,7 @@ const tabs = [
   { to: "/home", emoji: "🏠", label: "Início" },
   { to: "/minigames", emoji: "🎮", label: "Jogos" },
   { to: "/chat", emoji: "🤖", label: "IA" },
-  { to: "/", emoji: "🔄", label: "Recomeçar" },
+  { to: "/perfil", emoji: "👤", label: "Perfil" },
 ] as const;
 
 /** iOS-style top bar. Mobile only. */
@@ -20,7 +20,7 @@ export function MobileTopBar({
   emoji?: string;
   title: string;
   subtitle?: string;
-  backTo?: "/home" | "/minigames" | "/chat" | "/";
+  backTo?: "/home" | "/minigames" | "/chat" | "/" | "/perfil";
   right?: ReactNode;
 }) {
   return (
@@ -50,7 +50,17 @@ export function MobileTopBar({
             <p className="truncate text-[11px] text-muted-foreground">{subtitle}</p>
           ) : null}
         </div>
-        {right ? <div className="shrink-0">{right}</div> : null}
+        <div className="shrink-0">
+          {right ?? (
+            <Link
+              to="/"
+              aria-label="Recomeçar a imersão"
+              className="focus-ring glass inline-flex size-9 items-center justify-center rounded-full text-base"
+            >
+              <span aria-hidden="true">🔄</span>
+            </Link>
+          )}
+        </div>
       </div>
     </header>
   );
