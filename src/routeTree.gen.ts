@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as MinigamesRouteImport } from './routes/minigames'
+import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +36,11 @@ const MinigamesRoute = MinigamesRouteImport.update({
   path: '/minigames',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PerfilRoute = PerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/chat': typeof ChatRoute
   '/home': typeof HomeRoute
   '/minigames': typeof MinigamesRoute
+  '/perfil': typeof PerfilRoute
   '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/chat': typeof ChatRoute
   '/home': typeof HomeRoute
   '/minigames': typeof MinigamesRoute
+  '/perfil': typeof PerfilRoute
   '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesById {
@@ -61,14 +69,22 @@ export interface FileRoutesById {
   '/chat': typeof ChatRoute
   '/home': typeof HomeRoute
   '/minigames': typeof MinigamesRoute
+  '/perfil': typeof PerfilRoute
   '/api/chat': typeof ApiChatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/chat' | '/home' | '/minigames' | '/api/chat'
+  fullPaths: '/' | '/chat' | '/home' | '/minigames' | '/perfil' | '/api/chat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/chat' | '/home' | '/minigames' | '/api/chat'
-  id: '__root__' | '/' | '/chat' | '/home' | '/minigames' | '/api/chat'
+  to: '/' | '/chat' | '/home' | '/minigames' | '/perfil' | '/api/chat'
+  id:
+    | '__root__'
+    | '/'
+    | '/chat'
+    | '/home'
+    | '/minigames'
+    | '/perfil'
+    | '/api/chat'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,6 +92,7 @@ export interface RootRouteChildren {
   ChatRoute: typeof ChatRoute
   HomeRoute: typeof HomeRoute
   MinigamesRoute: typeof MinigamesRoute
+  PerfilRoute: typeof PerfilRoute
   ApiChatRoute: typeof ApiChatRoute
 }
 
@@ -109,6 +126,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MinigamesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/perfil': {
+      id: '/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof PerfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/chat': {
       id: '/api/chat'
       path: '/api/chat'
@@ -124,6 +148,7 @@ const rootRouteChildren: RootRouteChildren = {
   ChatRoute: ChatRoute,
   HomeRoute: HomeRoute,
   MinigamesRoute: MinigamesRoute,
+  PerfilRoute: PerfilRoute,
   ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
