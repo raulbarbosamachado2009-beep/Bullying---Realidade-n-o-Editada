@@ -1,4 +1,4 @@
-# Empathy Hub
+# Bullying - Realidade não Editada
 
 PROMPT PROFISSIONAL
 
@@ -15,23 +15,14 @@ IMPORTANTE
 NÃO implemente:
 
 Cadastro de usuários
-
 Registro de contas
-
 Banco de Dados
-
 Firebase
-
 Supabase
-
 MongoDB
-
 PostgreSQL
-
 Prisma
-
 APIs externas
-
 Backend
 
 O login será apenas visual (Front-end Fake Login), apenas para dar continuidade ao fluxo da aplicação.
