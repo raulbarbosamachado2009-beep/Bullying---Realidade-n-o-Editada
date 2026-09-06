@@ -196,13 +196,15 @@ function ChatPage() {
       </form>
 
       <div className="flex flex-wrap justify-center gap-2">
-        {suggestions.map((s) => (
+        {suggestions.map((s, i) => (
           <button
             key={s.text}
             type="button"
             onClick={() => void send(s.text)}
             disabled={loading}
-            className="focus-ring glass rounded-full px-3.5 py-2 text-xs text-muted-foreground transition-all hover:text-foreground active:scale-95"
+            className={`focus-ring glass rounded-full px-3.5 py-2 text-xs text-muted-foreground transition-all hover:text-foreground active:scale-95 ${
+              i > 1 ? "hidden lg:inline-flex" : ""
+            }`}
           >
             <span aria-hidden="true" className="mr-1 lg:hidden">
               {s.emoji}
