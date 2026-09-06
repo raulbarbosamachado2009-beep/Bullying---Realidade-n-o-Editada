@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { PageTransition } from "@/components/PageTransition";
-import { MobileTabBar, MobileTabBarSpacer, MobileTopBar } from "@/components/MobileShell";
+import { MobileTabBar, MobileTabBarSpacer } from "@/components/MobileShell";
 import { Navbar } from "@/components/Navbar";
 
 export const Route = createFileRoute("/perfil")({
@@ -31,6 +31,8 @@ export const Route = createFileRoute("/perfil")({
         property: "og:description",
         content: "Personalize seu perfil e acompanhe seus pontos nos minigames.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: PerfilPage,
@@ -118,9 +120,8 @@ function PerfilPage() {
       <div className="hidden lg:block">
         <Navbar />
       </div>
-      <MobileTopBar emoji="🔒" title={profile.handle} subtitle="Seu perfil" backTo="/home" />
 
-      <main className="mx-auto w-full max-w-2xl px-4 pb-8 pt-20 lg:pt-28">
+      <main className="mx-auto w-full max-w-2xl px-4 pb-8 pt-6 lg:pt-28">
         <header className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-5">
           <div className="relative shrink-0">
             <button

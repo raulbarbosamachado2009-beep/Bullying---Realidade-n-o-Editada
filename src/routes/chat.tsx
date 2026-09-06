@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowUp, Bot, Square, User } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { PageTransition } from "@/components/PageTransition";
-import { MobileTopBar } from "@/components/MobileShell";
+import iaBullyingIcon from "@/assets/ia-bullying-icon.png.asset.json";
 
 export const Route = createFileRoute("/chat")({
   head: () => ({
@@ -20,6 +20,8 @@ export const Route = createFileRoute("/chat")({
         property: "og:description",
         content: "Interface de conversa educativa sobre bullying, respeito e empatia.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: ChatPage,
@@ -138,6 +140,30 @@ function ChatPage() {
 
   const started = messages.some((m) => m.role === "user");
 
+  const mobileHeader = (
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/85 backdrop-blur-2xl lg:hidden">
+      <div className="flex h-[76px] items-center gap-3 px-4 pt-[env(safe-area-inset-top)]">
+        <Link
+          to="/home"
+          aria-label="Voltar para a página inicial"
+          className="focus-ring inline-flex size-10 shrink-0 items-center justify-center rounded-full text-foreground"
+        >
+          <ArrowLeft className="size-7" strokeWidth={2.25} aria-hidden="true" />
+        </Link>
+        <img
+          src={iaBullyingIcon.url}
+          alt=""
+          aria-hidden="true"
+          className="size-12 shrink-0 rounded-[14px] object-cover"
+        />
+        <div className="min-w-0 flex-1">
+          <h1 className="truncate text-[17px] font-semibold leading-tight">IA Bullying</h1>
+          <p className="truncate text-[13px] leading-tight text-muted-foreground">ajudante pessoal</p>
+        </div>
+      </div>
+    </header>
+  );
+
   const composer = (
     <div className="w-full">
       {error ? (
@@ -221,8 +247,8 @@ function ChatPage() {
     return (
       <PageTransition>
         <AnimatedBackground />
-        <MobileTopBar emoji="🤖" title="IA Educativa" subtitle="Assistente sobre bullying" backTo="/home" />
-        <div className="flex min-h-dvh flex-col pt-14 lg:pt-0">
+        {mobileHeader}
+        <div className="flex min-h-dvh flex-col pt-[76px] lg:pt-0">
           <header className="hidden items-center gap-3 px-5 py-5 lg:flex">
             <Link
               to="/home"
@@ -240,17 +266,14 @@ function ChatPage() {
               transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
               className="w-full text-center"
             >
-              <h1 className="text-gradient text-3xl font-semibold sm:text-5xl">
-                <span aria-hidden="true" className="mr-2 lg:hidden">
-                  🤖
-                </span>
+              <h1 className="text-gradient hidden text-3xl font-semibold sm:text-5xl lg:block">
                 IA Educativa
               </h1>
-              <p className="mx-auto mt-3 max-w-lg text-sm text-muted-foreground sm:text-base">
+              <p className="mx-auto mt-3 hidden max-w-lg text-sm text-muted-foreground sm:text-base lg:block">
                 Assistente educacional sobre bullying: entenda os tipos, reconheça sinais de alerta,
                 saiba como agir, apoiar e denunciar com segurança.
               </p>
-              <div className="mt-8">{composer}</div>
+              <div className="lg:mt-8">{composer}</div>
             </motion.div>
           </main>
         </div>
@@ -261,8 +284,8 @@ function ChatPage() {
   return (
     <PageTransition>
       <AnimatedBackground />
-      <MobileTopBar emoji="🤖" title="IA Educativa" subtitle="Assistente sobre bullying" backTo="/home" />
-      <div className="flex min-h-dvh flex-col pt-14 lg:pt-0">
+      {mobileHeader}
+      <div className="flex min-h-dvh flex-col pt-[76px] lg:pt-0">
         <header className="hidden items-center gap-3 px-5 py-5 lg:flex">
           <Link
             to="/home"
