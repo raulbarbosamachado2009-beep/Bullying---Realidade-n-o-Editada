@@ -285,7 +285,7 @@ function ChatPage() {
     <PageTransition>
       <AnimatedBackground />
       {mobileHeader}
-      <div className="flex min-h-dvh flex-col pt-[76px] lg:pt-0">
+      <div className="flex min-h-dvh flex-col pt-[64px] lg:pt-0">
         <header className="hidden items-center gap-3 px-5 py-5 lg:flex">
           <Link
             to="/home"
