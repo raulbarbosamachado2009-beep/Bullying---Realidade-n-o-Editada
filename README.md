@@ -572,16 +572,6 @@ RESULTADO ESPERADO
 
 O resultado final deve transmitir a sensação de estar navegando em um produto premium da Apple, com animações refinadas, visual minimalista, experiência altamente fluida, foco em acessibilidade e uma abordagem educativa sobre o bullying. O projeto deve ser totalmente front-end, sem autenticação real e sem banco de dados, deixando pontos de integração preparados para futuras implementações.
 
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/b86fe01a-6c1a-4c1c-8f74-cbe83541bfc8).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
 ## Development
 
 Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
