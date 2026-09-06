@@ -141,8 +141,8 @@ function ChatPage() {
   const started = messages.some((m) => m.role === "user");
 
   const mobileHeader = (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/85 backdrop-blur-2xl lg:hidden">
-      <div className="flex h-[76px] items-center gap-3 px-4 pt-[env(safe-area-inset-top)]">
+    <header className="fixed inset-x-0 top-0 z-50 bg-transparent lg:hidden">
+      <div className="flex h-[64px] items-center gap-3 px-4 pt-[env(safe-area-inset-top)]">
         <Link
           to="/home"
           aria-label="Voltar para a página inicial"
@@ -154,7 +154,7 @@ function ChatPage() {
           src={iaBullyingIcon.url}
           alt=""
           aria-hidden="true"
-          className="size-12 shrink-0 rounded-[14px] object-cover"
+          className="size-11 shrink-0 rounded-[13px] object-cover"
         />
         <div className="min-w-0 flex-1">
           <h1 className="truncate text-[17px] font-semibold leading-tight">IA Bullying</h1>
@@ -248,7 +248,7 @@ function ChatPage() {
       <PageTransition>
         <AnimatedBackground />
         {mobileHeader}
-        <div className="flex min-h-dvh flex-col pt-[76px] lg:pt-0">
+        <div className="flex min-h-dvh flex-col pt-[64px] lg:pt-0">
           <header className="hidden items-center gap-3 px-5 py-5 lg:flex">
             <Link
               to="/home"
@@ -285,7 +285,7 @@ function ChatPage() {
     <PageTransition>
       <AnimatedBackground />
       {mobileHeader}
-      <div className="flex min-h-dvh flex-col pt-[76px] lg:pt-0">
+      <div className="flex min-h-dvh flex-col pt-[64px] lg:pt-0">
         <header className="hidden items-center gap-3 px-5 py-5 lg:flex">
           <Link
             to="/home"
