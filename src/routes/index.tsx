@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
-import { CheckCircle2, ChevronRight, XCircle } from "lucide-react";
+import { CheckCircle2, ChevronRight, Hand, XCircle } from "lucide-react";
 import { useState } from "react";
 import {
   Eye,
@@ -42,14 +42,14 @@ export const Route = createFileRoute("/")({
 const ease = [0.32, 0.72, 0, 1] as const;
 
 const topics = [
-  { Icon: ShieldAlert, emoji: "🚨", label: "O que é Bullying" },
-  { Icon: Layers, emoji: "🧩", label: "Tipos de Bullying" },
-  { Icon: Eye, emoji: "👀", label: "Como identificar" },
-  { Icon: ShieldCheck, emoji: "🛡️", label: "Como prevenir" },
-  { Icon: Flag, emoji: "🚩", label: "Como agir" },
-  { Icon: MessageSquare, emoji: "📣", label: "Como denunciar" },
-  { Icon: HeartHandshake, emoji: "🤝", label: "Como apoiar uma vítima" },
-  { Icon: RefreshCcw, emoji: "🔄", label: "Como reverter uma situação" },
+  { Icon: ShieldAlert, label: "O que é Bullying" },
+  { Icon: Layers, label: "Tipos de Bullying" },
+  { Icon: Eye, label: "Como identificar" },
+  { Icon: ShieldCheck, label: "Como prevenir" },
+  { Icon: Flag, label: "Como agir" },
+  { Icon: MessageSquare, label: "Como denunciar" },
+  { Icon: HeartHandshake, label: "Como apoiar uma vítima" },
+  { Icon: RefreshCcw, label: "Como reverter uma situação" },
 ];
 
 const options = [
@@ -138,7 +138,7 @@ function Welcome({ onNext }: { onNext: () => void }) {
   return (
     <motion.section {...screen} className="w-full max-w-3xl text-center">
       <h1 className="text-4xl font-semibold leading-[1.08] text-gradient sm:text-6xl lg:text-7xl">
-        Olá! <span aria-hidden="true" className="lg:hidden">👋</span>
+        Olá! <Hand aria-hidden="true" className="ml-2 inline size-8 text-primary lg:hidden" />
         <span className="mt-3 block text-lg font-medium text-muted-foreground sm:text-2xl lg:text-3xl">
           Seja bem-vindo à Imersão Bullying – Realidade não Editada
         </span>
@@ -165,10 +165,7 @@ function Topics({ onNext }: { onNext: () => void }) {
             transition={{ duration: 0.6, delay: 0.15 + i * 0.08, ease }}
           >
             <GlassCard className="flex items-center gap-3 rounded-2xl p-3 sm:p-4">
-              <span aria-hidden="true" className="text-lg leading-none lg:hidden">
-                {t.emoji}
-              </span>
-              <t.Icon className="hidden size-5 shrink-0 text-primary lg:block" aria-hidden="true" />
+              <t.Icon className="size-5 shrink-0 text-primary" aria-hidden="true" />
               <span className="text-sm">{t.label}</span>
             </GlassCard>
           </motion.li>

@@ -4,11 +4,20 @@ import { useEffect, useRef, useState } from "react";
 import {
   Camera,
   Check,
+  Brain,
   Copy,
+  HeartHandshake,
+  Instagram,
   LogOut,
+  MessageCircle,
   Pencil,
+  Puzzle,
   Repeat,
+  Scale,
   Share2,
+  Settings,
+  Trophy,
+  UserRound,
   UserPlus,
   X,
 } from "lucide-react";
@@ -50,15 +59,15 @@ const STORAGE_KEY = "imersao-perfil";
 const defaultProfile: Profile = {
   handle: "estudante._",
   name: "Estudante",
-  bio: "Participando da Imersão Bullying — Realidade não Editada. Respeito é o mínimo. 💙",
+  bio: "Participando da Imersão Bullying — Realidade não Editada. Respeito é o mínimo.",
   avatar: null,
 };
 
 const gameScores = [
-  { emoji: "🧠", label: "Quiz", value: 0 },
-  { emoji: "✅", label: "Verdadeiro ou Falso", value: 0 },
-  { emoji: "🤝", label: "Escolha de Atitude", value: 0 },
-  { emoji: "🧩", label: "Cenários", value: 0 },
+  { Icon: Brain, label: "Quiz", value: 0 },
+  { Icon: Scale, label: "Verdadeiro ou Falso", value: 0 },
+  { Icon: HeartHandshake, label: "Escolha de Atitude", value: 0 },
+  { Icon: Puzzle, label: "Cenários", value: 0 },
 ];
 
 function PerfilPage() {
@@ -137,9 +146,7 @@ function PerfilPage() {
                   className="size-full object-cover"
                 />
               ) : (
-                <span aria-hidden="true" className="text-3xl">
-                  👤
-                </span>
+                <UserRound aria-hidden="true" className="size-9 text-primary" />
               )}
             </button>
             <span
@@ -208,15 +215,13 @@ function PerfilPage() {
         </div>
 
         <section aria-labelledby="pontos" className="mt-8">
-          <h2 id="pontos" className="text-sm font-semibold text-muted-foreground">
-            🏆 Pontos nos minigames
+          <h2 id="pontos" className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+            <Trophy className="size-4 text-primary" aria-hidden="true" /> Pontos nos minigames
           </h2>
           <ul className="mt-3 grid grid-cols-2 gap-3">
             {scores.map((s) => (
               <li key={s.label} className="glass rounded-3xl p-4">
-                <span aria-hidden="true" className="text-xl">
-                  {s.emoji}
-                </span>
+                <s.Icon aria-hidden="true" className="size-5 text-primary" />
                 <p className="mt-1 text-2xl font-semibold">{s.value}</p>
                 <p className="text-xs text-muted-foreground">{s.label}</p>
               </li>
@@ -225,8 +230,8 @@ function PerfilPage() {
         </section>
 
         <section aria-labelledby="conta" className="mt-8 space-y-2">
-          <h2 id="conta" className="text-sm font-semibold text-muted-foreground">
-            ⚙️ Conta
+          <h2 id="conta" className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+            <Settings className="size-4 text-primary" aria-hidden="true" /> Conta
           </h2>
           <Link
             to="/"
@@ -363,7 +368,7 @@ function PerfilPage() {
                   rel="noreferrer"
                   className="focus-ring glass flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm active:scale-[0.99]"
                 >
-                  <span aria-hidden="true">💬</span> Compartilhar no WhatsApp
+                  <MessageCircle className="size-4 text-primary" aria-hidden="true" /> Compartilhar no WhatsApp
                 </a>
                 <a
                   href="https://www.instagram.com/"
@@ -371,7 +376,7 @@ function PerfilPage() {
                   rel="noreferrer"
                   className="focus-ring glass flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm active:scale-[0.99]"
                 >
-                  <span aria-hidden="true">📸</span> Compartilhar no Instagram
+                  <Instagram className="size-4 text-primary" aria-hidden="true" /> Compartilhar no Instagram
                 </a>
               </div>
             </div>
