@@ -3,10 +3,13 @@ import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
 import {
   AlertTriangle,
+  Bot,
+  BookOpen,
   Check,
   ChevronLeft,
   ChevronRight,
   Globe,
+  Gamepad2,
   HeartHandshake,
   Landmark,
   MessageSquare,
@@ -16,6 +19,7 @@ import {
   Zap,
   Brain,
   ShieldCheck,
+  RotateCcw,
 } from "lucide-react";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { Footer } from "@/components/Footer";
@@ -52,20 +56,20 @@ export const Route = createFileRoute("/home")({
 });
 
 const types = [
-  { Icon: Zap, emoji: "💥", title: "Físico", text: "Empurrões, chutes, agressões e danos a pertences." },
-  { Icon: MessageSquare, emoji: "🗯️", title: "Verbal", text: "Apelidos, xingamentos, humilhações e ameaças." },
-  { Icon: Brain, emoji: "🧠", title: "Psicológico", text: "Chantagem, manipulação, intimidação e perseguição." },
-  { Icon: Globe, emoji: "📱", title: "Virtual", text: "Cyberbullying: exposição e ataques em redes e grupos." },
-  { Icon: Users, emoji: "🚷", title: "Social", text: "Exclusão deliberada, boatos e isolamento do grupo." },
-  { Icon: Sparkle, emoji: "✊🏾", title: "Racial", text: "Ofensas relacionadas a raça, cor, etnia ou origem." },
-  { Icon: Landmark, emoji: "🕊️", title: "Religioso", text: "Zombarias e discriminação por crença ou fé." },
+  { Icon: Zap, title: "Físico", text: "Empurrões, chutes, agressões e danos a pertences." },
+  { Icon: MessageSquare, title: "Verbal", text: "Apelidos, xingamentos, humilhações e ameaças." },
+  { Icon: Brain, title: "Psicológico", text: "Chantagem, manipulação, intimidação e perseguição." },
+  { Icon: Globe, title: "Virtual", text: "Cyberbullying: exposição e ataques em redes e grupos." },
+  { Icon: Users, title: "Social", text: "Exclusão deliberada, boatos e isolamento do grupo." },
+  { Icon: Sparkle, title: "Racial", text: "Ofensas relacionadas a raça, cor, etnia ou origem." },
+  { Icon: Landmark, title: "Religioso", text: "Zombarias e discriminação por crença ou fé." },
 ];
 
 const mobileShortcuts = [
-  { to: "/minigames" as const, emoji: "🎮", title: "Minigames", text: "6 desafios rápidos" },
-  { to: "/chat" as const, emoji: "🤖", title: "IA Educativa", text: "Tire suas dúvidas" },
-  { to: "/home" as const, hash: "aprender", emoji: "📚", title: "Aprender", text: "Tipos e sinais" },
-  { to: "/" as const, emoji: "🔄", title: "Recomeçar", text: "Refazer a imersão" },
+  { to: "/minigames" as const, Icon: Gamepad2, title: "Minigames", text: "6 desafios rápidos" },
+  { to: "/chat" as const, Icon: Bot, title: "IA Educativa", text: "Tire suas dúvidas" },
+  { to: "/home" as const, hash: "aprender", Icon: BookOpen, title: "Aprender", text: "Tipos e sinais" },
+  { to: "/" as const, Icon: RotateCcw, title: "Recomeçar", text: "Refazer a imersão" },
 ];
 
 const signs = [
@@ -124,7 +128,7 @@ const reveal = {
   viewport: { once: true, margin: "-60px" },
 };
 
-type BullyingType = { Icon: React.ElementType; emoji: string; title: string; text: string };
+type BullyingType = { Icon: React.ElementType; title: string; text: string };
 
 function TypeCarouselModal({ types }: { types: BullyingType[] }) {
   const [open, setOpen] = useState(false);
@@ -175,9 +179,10 @@ function TypeCarouselModal({ types }: { types: BullyingType[] }) {
 
               <div className="min-h-[220px]">
                 <div className="flex flex-col items-center text-center">
-                  <span className="text-5xl" aria-hidden="true">
-                    {types[idx]!.emoji}
-                  </span>
+                  {(() => {
+                    const TypeIcon = types[idx]!.Icon;
+                    return <TypeIcon className="size-12 text-primary" aria-hidden="true" />;
+                  })()}
                   <h3 className="mt-4 text-2xl font-semibold">{types[idx]!.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{types[idx]!.text}</p>
                 </div>
@@ -223,7 +228,7 @@ function HomePage() {
     <PageTransition>
       <AnimatedBackground />
       <Navbar />
-      <MobileTopBar emoji="🛡️" title="Imersão Bullying" subtitle="Realidade não Editada" />
+      <MobileTopBar Icon={ShieldCheck} title="Imersão Bullying" subtitle="Realidade não Editada" />
 
       <main className="pt-14 lg:pt-0">
         <section
@@ -263,10 +268,10 @@ function HomePage() {
               className="mt-8 flex flex-wrap justify-center gap-3 lg:mt-10"
             >
               <Button asChild size="lg" className="rounded-full px-8">
-                <Link to="/chat">🤖 Conversar com IA</Link>
+                <Link to="/chat"><Bot aria-hidden="true" /> Conversar com IA</Link>
               </Button>
               <Button asChild size="lg" variant="secondary" className="rounded-full px-8">
-                <Link to="/minigames">🎮 Minigames</Link>
+                <Link to="/minigames"><Gamepad2 aria-hidden="true" /> Minigames</Link>
               </Button>
             </motion.div>
           </div>
@@ -281,9 +286,7 @@ function HomePage() {
                   {...(s.hash ? { hash: s.hash } : {})}
                   className="focus-ring glass block rounded-3xl p-4 transition-transform active:scale-95"
                 >
-                  <span aria-hidden="true" className="text-2xl">
-                    {s.emoji}
-                  </span>
+                   <s.Icon aria-hidden="true" className="size-6 text-primary" />
                   <p className="mt-2 text-sm font-semibold">{s.title}</p>
                   <p className="text-[11px] text-muted-foreground">{s.text}</p>
                 </Link>
@@ -300,16 +303,13 @@ function HomePage() {
           />
           <div className="mx-auto mt-8 grid max-w-5xl gap-4 md:grid-cols-3 lg:mt-14 lg:gap-5">
             {[
-              { Icon: ShieldCheck, e: "🛡️", t: "Conscientizar", d: "Mostrar o impacto real das agressões." },
-              { Icon: HeartHandshake, e: "🤝", t: "Acolher", d: "Ensinar como apoiar quem sofre." },
-              { Icon: AlertTriangle, e: "⚠️", t: "Agir", d: "Dar caminhos claros de denúncia e mediação." },
+              { Icon: ShieldCheck, t: "Conscientizar", d: "Mostrar o impacto real das agressões." },
+              { Icon: HeartHandshake, t: "Acolher", d: "Ensinar como apoiar quem sofre." },
+              { Icon: AlertTriangle, t: "Agir", d: "Dar caminhos claros de denúncia e mediação." },
             ].map((c, i) => (
               <motion.div key={c.t} {...reveal} transition={{ duration: 0.7, delay: i * 0.1 }}>
                 <GlassCard interactive className="h-full p-6 lg:p-8">
-                  <span aria-hidden="true" className="text-2xl lg:hidden">
-                    {c.e}
-                  </span>
-                  <c.Icon className="hidden size-6 text-primary lg:block" aria-hidden="true" />
+                  <c.Icon className="size-6 text-primary" aria-hidden="true" />
                   <h3 className="mt-5 text-xl font-semibold">{c.t}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.d}</p>
                 </GlassCard>
@@ -449,7 +449,8 @@ function HomePage() {
 
         <section className="px-6 pb-6 text-center lg:hidden">
           <p className="text-[11px] leading-relaxed text-muted-foreground">
-            🛡️ Imersão Bullying — Realidade não Editada
+            <ShieldCheck className="mr-1 inline size-3.5 text-primary" aria-hidden="true" />
+            Imersão Bullying — Realidade não Editada
             <br />© {new Date().getFullYear()} Projeto educativo escolar.
           </p>
         </section>

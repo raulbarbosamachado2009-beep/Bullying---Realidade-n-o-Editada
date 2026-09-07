@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, ArrowUp, Bot, Square, User } from "lucide-react";
+import { ArrowLeft, ArrowUp, Bot, CircleHelp, HeartHandshake, School, Search, Square, User } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { PageTransition } from "@/components/PageTransition";
@@ -38,10 +38,10 @@ const initialMessages: Message[] = [
 ];
 
 const suggestions = [
-  { emoji: "❓", text: "O que é bullying?" },
-  { emoji: "🔍", text: "Como identificar sinais?" },
-  { emoji: "🏫", text: "Como denunciar na escola?" },
-  { emoji: "🤝", text: "Como apoiar uma vítima?" },
+  { Icon: CircleHelp, text: "O que é bullying?" },
+  { Icon: Search, text: "Como identificar sinais?" },
+  { Icon: School, text: "Como denunciar na escola?" },
+  { Icon: HeartHandshake, text: "Como apoiar uma vítima?" },
 ];
 
 function ChatPage() {
@@ -232,9 +232,7 @@ function ChatPage() {
               i > 1 ? "hidden lg:inline-flex" : ""
             }`}
           >
-            <span aria-hidden="true" className="mr-1 lg:hidden">
-              {s.emoji}
-            </span>
+            <s.Icon aria-hidden="true" className="mr-1 size-3.5 lg:hidden" />
             {s.text}
           </button>
         ))}

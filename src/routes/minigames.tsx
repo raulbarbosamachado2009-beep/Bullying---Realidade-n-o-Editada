@@ -7,6 +7,7 @@ import {
   ListOrdered,
   PenLine,
   Scale,
+  LockKeyhole,
   Thermometer,
   XCircle,
 } from "lucide-react";
@@ -73,15 +74,6 @@ type Game =
       Icon: typeof Brain;
       rounds: ScaleRound[];
     };
-
-const gameEmoji: Record<string, string> = {
-  quiz: "🧠",
-  vf: "✅",
-  atitude: "⚖️",
-  situacao: "✍️",
-  ordem: "🔢",
-  termometro: "🌡️",
-};
 
 const games: Game[] = [
   {
@@ -480,7 +472,7 @@ function MinigamesPage() {
     <PageTransition>
       <AnimatedBackground />
       <Navbar />
-      <MobileTopBar emoji="🎮" title="Minigames" subtitle="Aprender jogando" />
+      <MobileTopBar Icon={Gamepad2} title="Minigames" subtitle="Aprender jogando" />
       <main className="flex min-h-dvh flex-col items-center px-4 pb-16 pt-20 sm:px-6 lg:pt-28">
         <div className="hidden lg:block">
           <SectionTitle
@@ -490,7 +482,8 @@ function MinigamesPage() {
           />
         </div>
         <p className="mt-2 max-w-md text-center text-[13px] text-muted-foreground lg:hidden">
-          Seis desafios rápidos. Sua pontuação fica só no seu aparelho. 🔒
+          Seis desafios rápidos. Sua pontuação fica só no seu aparelho.
+          <LockKeyhole className="ml-1 inline size-3.5" aria-hidden="true" />
         </p>
 
         <div className="mx-auto mt-5 grid w-full max-w-5xl grid-cols-2 gap-3 sm:mt-8 lg:grid-cols-3 lg:gap-4">
@@ -506,9 +499,7 @@ function MinigamesPage() {
                 interactive
                 className="flex h-full flex-col gap-2 p-4 transition-transform active:scale-95 lg:gap-3 lg:p-5"
               >
-                <span aria-hidden="true" className="text-2xl lg:hidden">
-                  {gameEmoji[g.id]}
-                </span>
+                <g.Icon aria-hidden="true" className="size-6 text-primary lg:hidden" />
                 <span className="glass hidden size-10 items-center justify-center rounded-2xl lg:inline-flex">
                   <g.Icon className="size-5 text-primary" aria-hidden="true" />
                 </span>

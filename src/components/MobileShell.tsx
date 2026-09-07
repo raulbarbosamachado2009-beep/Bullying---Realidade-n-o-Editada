@@ -1,23 +1,24 @@
 import { Link } from "@tanstack/react-router";
+import { Bot, Gamepad2, House, RotateCcw, UserRound, type LucideIcon } from "lucide-react";
 import { motion } from "motion/react";
 import type { ReactNode } from "react";
 
 const tabs = [
-  { to: "/home", emoji: "🏠", label: "Início" },
-  { to: "/minigames", emoji: "🎮", label: "Jogos" },
-  { to: "/chat", emoji: "🤖", label: "IA" },
-  { to: "/perfil", emoji: "👤", label: "Perfil" },
+  { to: "/home", Icon: House, label: "Início" },
+  { to: "/minigames", Icon: Gamepad2, label: "Jogos" },
+  { to: "/chat", Icon: Bot, label: "IA" },
+  { to: "/perfil", Icon: UserRound, label: "Perfil" },
 ] as const;
 
 /** iOS-style top bar. Mobile only. */
 export function MobileTopBar({
-  emoji,
+  Icon,
   title,
   subtitle,
   backTo,
   right,
 }: {
-  emoji?: string;
+  Icon?: LucideIcon;
   title: string;
   subtitle?: string;
   backTo?: "/home" | "/minigames" | "/chat" | "/" | "/perfil";
@@ -39,10 +40,8 @@ export function MobileTopBar({
         ) : null}
         <div className="min-w-0 flex-1">
           <h2 className="truncate text-[17px] font-semibold leading-tight">
-            {emoji ? (
-              <span aria-hidden="true" className="mr-1.5">
-                {emoji}
-              </span>
+            {Icon ? (
+              <Icon aria-hidden="true" className="mr-1.5 inline size-4 text-primary" />
             ) : null}
             {title}
           </h2>
@@ -57,7 +56,7 @@ export function MobileTopBar({
               aria-label="Recomeçar a imersão"
               className="focus-ring glass inline-flex size-9 items-center justify-center rounded-full text-base"
             >
-              <span aria-hidden="true">🔄</span>
+              <RotateCcw className="size-4" aria-hidden="true" />
             </Link>
           )}
         </div>
@@ -85,9 +84,7 @@ export function MobileTabBar() {
               activeProps={{ "data-active": "true" }}
               className="focus-ring group flex flex-col items-center gap-0.5 rounded-2xl py-2 text-muted-foreground transition-colors data-[active=true]:text-primary"
             >
-              <span aria-hidden="true" className="text-[22px] leading-none transition-transform group-active:scale-90">
-                {t.emoji}
-              </span>
+              <t.Icon aria-hidden="true" className="size-[22px] transition-transform group-active:scale-90" />
               <span className="text-[10px] font-medium">{t.label}</span>
             </Link>
           </li>
