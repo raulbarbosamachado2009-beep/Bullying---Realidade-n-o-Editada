@@ -302,7 +302,16 @@ function LoginStep() {
             className="mt-5 space-y-4"
             onSubmit={(e) => {
               e.preventDefault();
-              navigate({ to: "/home" });
+              const nome = String(new FormData(e.currentTarget).get("nome") ?? "").trim();
+              if (!nome) {
+                toast.error("Escreva seu nome para continuar");
+                return;
+              }
+              const id = toast.loading("Entrando…");
+              setTimeout(() => {
+                toast.success(`Bem-vindo, ${nome}!`, { id });
+                navigate({ to: "/home" });
+              }, 600);
             }}
           >
             <div className="space-y-2">
