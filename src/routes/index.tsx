@@ -169,6 +169,8 @@ function Welcome({ onNext }: { onNext: () => void }) {
         staticText="Uma imersão sobre"
         rotatingTexts={["respeito", "empatia", "coragem", "convivência"]}
         staticTextClassName="text-muted-foreground"
+        rotatingTextClassName="font-semibold text-primary"
+        backgroundClassName="bg-primary/10 rounded-full"
       />
       <Button size="lg" className="mt-8 rounded-full px-10 text-base sm:mt-12" onClick={onNext}>
         Começar
