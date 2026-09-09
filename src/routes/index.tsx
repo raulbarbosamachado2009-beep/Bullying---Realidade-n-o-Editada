@@ -103,6 +103,16 @@ function Wizard() {
   return (
     <>
       <AnimatedBackground />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 -z-10 opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
+      >
+        <GradientWave
+          colors={["#0ea5e9", "#1e293b", "#38bdf8", "#0f172a"]}
+          shadowPower={6}
+          darkenTop
+        />
+      </div>
       <main className="relative flex h-dvh flex-col items-center justify-center overflow-hidden px-4 pb-[max(4rem,env(safe-area-inset-bottom))] pt-[max(3rem,env(safe-area-inset-top))] sm:px-6 sm:py-16">
         <AnimatePresence mode="wait">
           {step === 0 ? <Welcome key="s0" onNext={() => setStep(1)} /> : null}
