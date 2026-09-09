@@ -21,6 +21,7 @@ import {
   UserPlus,
   X,
 } from "lucide-react";
+import { toast } from "sonner";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { PageTransition } from "@/components/PageTransition";
 import { MobileTabBar, MobileTabBarSpacer } from "@/components/MobileShell";
@@ -286,6 +287,7 @@ function PerfilPage() {
                     bio: String(form.get("bio") ?? profile.bio),
                   });
                   setEditing(false);
+                  toast.success("Perfil salvo");
                 }}
               >
                 <label className="block text-xs text-muted-foreground" htmlFor="p-name">

@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { PageTransition } from "@/components/PageTransition";
 import iaBullyingIcon from "@/assets/ia-bullying-icon.png.asset.json";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/chat")({
   head: () => ({
@@ -131,6 +132,7 @@ function ChatPage() {
     } catch (err) {
       if ((err as Error).name === "AbortError") return;
       setError((err as Error).message);
+      toast.error((err as Error).message);
       setMessages((prev) => prev.filter((m, i) => !(i === prev.length - 1 && m.text === "")));
     } finally {
       setLoading(false);
@@ -141,17 +143,18 @@ function ChatPage() {
   const started = messages.some((m) => m.role === "user");
 
   const mobileHeader = (
-    <header
-      className="fixed inset-x-0 top-0 z-50 lg:hidden"
-      style={{
-        background: "rgba(15, 23, 42, 0.55)",
-        backdropFilter: "blur(28px) saturate(140%)",
-        maskImage: "linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 55%, transparent 100%)",
-        WebkitMaskImage:
-          "linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 55%, transparent 100%)",
-      }}
-    >
-      <div className="flex h-[64px] items-center gap-3 px-4 pt-[env(safe-area-inset-top)]">
+    <header className="fixed inset-x-0 top-0 z-50 lg:hidden">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: "rgba(15, 23, 42, 0.55)",
+          backdropFilter: "blur(28px) saturate(140%)",
+          maskImage:
+            "linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 55%, transparent 100%)",
+        }}
+      />
+      <div className="relative flex h-[64px] items-center gap-3 px-4 pt-[env(safe-area-inset-top)]">
         <Link
           to="/home"
           aria-label="Voltar para a página inicial"

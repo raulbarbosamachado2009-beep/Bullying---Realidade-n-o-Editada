@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
 import { CheckCircle2, ChevronRight, Hand, XCircle } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Eye,
   Flag,
@@ -19,6 +19,9 @@ import { GlassCard } from "@/components/GlassCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import GradientWave from "@/components/ui/gradient-wave";
+import TextLoop from "@/components/ui/text-loop";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -96,10 +99,28 @@ const infoCards = [
 
 function Wizard() {
   const [step, setStep] = useState(0);
+  const [waveOn, setWaveOn] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setWaveOn(true), 1400);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <>
       <AnimatedBackground />
+      {waveOn ? (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 -z-10 animate-fade-in opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
+        >
+          <GradientWave
+            colors={["#0ea5e9", "#1e293b", "#38bdf8", "#0f172a"]}
+            shadowPower={6}
+            darkenTop
+          />
+        </div>
+      ) : null}
       <main className="relative flex h-dvh flex-col items-center justify-center overflow-hidden px-4 pb-[max(4rem,env(safe-area-inset-bottom))] pt-[max(3rem,env(safe-area-inset-top))] sm:px-6 sm:py-16">
         <AnimatePresence mode="wait">
           {step === 0 ? <Welcome key="s0" onNext={() => setStep(1)} /> : null}
@@ -143,6 +164,14 @@ function Welcome({ onNext }: { onNext: () => void }) {
           Seja bem-vindo à Imersão Bullying – Realidade não Editada
         </span>
       </h1>
+      <TextLoop
+        className="mt-6 text-sm font-medium sm:text-base"
+        staticText="Uma imersão sobre"
+        rotatingTexts={["respeito", "empatia", "coragem", "convivência"]}
+        staticTextClassName="text-muted-foreground"
+        rotatingTextClassName="font-semibold text-primary"
+        backgroundClassName="bg-primary/10 rounded-full"
+      />
       <Button size="lg" className="mt-8 rounded-full px-10 text-base sm:mt-12" onClick={onNext}>
         Começar
       </Button>
@@ -283,7 +312,16 @@ function LoginStep() {
             className="mt-5 space-y-4"
             onSubmit={(e) => {
               e.preventDefault();
-              navigate({ to: "/home" });
+              const nome = String(new FormData(e.currentTarget).get("nome") ?? "").trim();
+              if (!nome) {
+                toast.error("Escreva seu nome para continuar");
+                return;
+              }
+              const id = toast.loading("Entrando…");
+              setTimeout(() => {
+                toast.success(`Bem-vindo, ${nome}!`, { id });
+                navigate({ to: "/home" });
+              }, 600);
             }}
           >
             <div className="space-y-2">
