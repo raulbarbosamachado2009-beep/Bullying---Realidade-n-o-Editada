@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { PageTransition } from "@/components/PageTransition";
 import iaBullyingIcon from "@/assets/ia-bullying-icon.png.asset.json";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/chat")({
   head: () => ({
@@ -131,6 +132,7 @@ function ChatPage() {
     } catch (err) {
       if ((err as Error).name === "AbortError") return;
       setError((err as Error).message);
+      toast.error((err as Error).message);
       setMessages((prev) => prev.filter((m, i) => !(i === prev.length - 1 && m.text === "")));
     } finally {
       setLoading(false);

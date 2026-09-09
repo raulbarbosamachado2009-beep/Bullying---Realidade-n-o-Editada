@@ -19,6 +19,9 @@ import { GlassCard } from "@/components/GlassCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import GradientWave from "@/components/ui/gradient-wave";
+import TextLoop from "@/components/ui/text-loop";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -137,12 +140,28 @@ const screen = {
 function Welcome({ onNext }: { onNext: () => void }) {
   return (
     <motion.section {...screen} className="w-full max-w-3xl text-center">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-45 [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_72%)]"
+      >
+        <GradientWave
+          colors={["#0ea5e9", "#1e293b", "#38bdf8", "#0f172a"]}
+          shadowPower={6}
+          darkenTop
+        />
+      </div>
       <h1 className="text-4xl font-semibold leading-[1.08] text-gradient sm:text-6xl lg:text-7xl">
         Olá! <Hand aria-hidden="true" className="ml-2 inline size-8 text-primary lg:hidden" />
         <span className="mt-3 block text-lg font-medium text-muted-foreground sm:text-2xl lg:text-3xl">
           Seja bem-vindo à Imersão Bullying – Realidade não Editada
         </span>
       </h1>
+      <TextLoop
+        className="mt-6 text-sm font-medium sm:text-base"
+        staticText="Uma imersão sobre"
+        rotatingTexts={["respeito", "empatia", "coragem", "convivência"]}
+        staticTextClassName="text-muted-foreground"
+      />
       <Button size="lg" className="mt-8 rounded-full px-10 text-base sm:mt-12" onClick={onNext}>
         Começar
       </Button>
