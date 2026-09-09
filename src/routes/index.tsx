@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
 import { CheckCircle2, ChevronRight, Hand, XCircle } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Eye,
   Flag,
@@ -99,20 +99,28 @@ const infoCards = [
 
 function Wizard() {
   const [step, setStep] = useState(0);
+  const [waveOn, setWaveOn] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setWaveOn(true), 1400);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <>
       <AnimatedBackground />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-0 -z-10 opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
-      >
-        <GradientWave
-          colors={["#0ea5e9", "#1e293b", "#38bdf8", "#0f172a"]}
-          shadowPower={6}
-          darkenTop
-        />
-      </div>
+      {waveOn ? (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 -z-10 animate-fade-in opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
+        >
+          <GradientWave
+            colors={["#0ea5e9", "#1e293b", "#38bdf8", "#0f172a"]}
+            shadowPower={6}
+            darkenTop
+          />
+        </div>
+      ) : null}
       <main className="relative flex h-dvh flex-col items-center justify-center overflow-hidden px-4 pb-[max(4rem,env(safe-area-inset-bottom))] pt-[max(3rem,env(safe-area-inset-top))] sm:px-6 sm:py-16">
         <AnimatePresence mode="wait">
           {step === 0 ? <Welcome key="s0" onNext={() => setStep(1)} /> : null}
