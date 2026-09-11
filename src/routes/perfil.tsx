@@ -9,6 +9,7 @@ import {
   HeartHandshake,
   Instagram,
   LogOut,
+  Mail,
   MessageCircle,
   Pencil,
   Puzzle,
@@ -18,7 +19,6 @@ import {
   Settings,
   Trophy,
   UserRound,
-  UserPlus,
   X,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -71,12 +71,16 @@ const gameScores = [
   { Icon: Puzzle, label: "Cenários", value: 0 },
 ];
 
+const tabs = ["Pontos", "Conta"] as const;
+type Tab = (typeof tabs)[number];
+
 function PerfilPage() {
   const [profile, setProfile] = useState<Profile>(defaultProfile);
   const [editing, setEditing] = useState(false);
   const [sharing, setSharing] = useState(false);
   const [copied, setCopied] = useState(false);
   const [following, setFollowing] = useState(false);
+  const [tab, setTab] = useState<Tab>("Pontos");
   const [scores, setScores] = useState(gameScores);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -131,122 +135,177 @@ function PerfilPage() {
         <Navbar />
       </div>
 
-      <main className="mx-auto w-full max-w-2xl px-4 pb-8 pt-6 lg:pt-28">
-        <header className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-5">
-          <div className="relative shrink-0">
-            <button
-              type="button"
-              onClick={() => fileRef.current?.click()}
-              aria-label="Alterar foto de perfil"
-              className="focus-ring glass grid size-24 place-items-center overflow-hidden rounded-full"
-            >
-              {profile.avatar ? (
-                <img
-                  src={profile.avatar}
-                  alt={`Foto de perfil de ${profile.name}`}
-                  className="size-full object-cover"
-                />
-              ) : (
-                <UserRound aria-hidden="true" className="size-9 text-primary" />
-              )}
-            </button>
-            <span
-              aria-hidden="true"
-              className="absolute -bottom-1 -right-1 grid size-8 place-items-center rounded-full bg-primary text-primary-foreground"
-            >
-              <Camera className="size-4" />
+      <main className="mx-auto w-full max-w-2xl pb-8 lg:pt-24">
+        {/* Capa */}
+        <div className="relative h-40 overflow-hidden sm:h-52 lg:rounded-3xl">
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-[linear-gradient(140deg,var(--primary)_0%,color-mix(in_oklab,var(--primary)_40%,var(--background))_45%,var(--background)_100%)]"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-[radial-gradient(120%_90%_at_20%_0%,color-mix(in_oklab,var(--primary-glow)_45%,transparent),transparent_70%)]"
+          />
+          <Link
+            to="/home"
+            aria-label="Voltar"
+            className="focus-ring glass absolute left-4 top-[max(1rem,env(safe-area-inset-top))] grid size-10 place-items-center rounded-full text-foreground lg:hidden"
+          >
+            <span aria-hidden="true" className="text-xl leading-none">
+              ‹
             </span>
-            <input
-              ref={fileRef}
-              type="file"
-              accept="image/*"
-              className="sr-only"
-              onChange={(e) => onPickAvatar(e.target.files?.[0])}
-            />
+          </Link>
+        </div>
+
+        <div className="px-4">
+          {/* Avatar + ações */}
+          <div className="-mt-12 flex items-end justify-between gap-3">
+            <div className="relative shrink-0">
+              <button
+                type="button"
+                onClick={() => fileRef.current?.click()}
+                aria-label="Alterar foto de perfil"
+                className="focus-ring grid size-24 place-items-center overflow-hidden rounded-3xl border-4 border-background bg-muted"
+              >
+                {profile.avatar ? (
+                  <img
+                    src={profile.avatar}
+                    alt={`Foto de perfil de ${profile.name}`}
+                    className="size-full object-cover"
+                  />
+                ) : (
+                  <UserRound aria-hidden="true" className="size-9 text-primary" />
+                )}
+              </button>
+              <span
+                aria-hidden="true"
+                className="absolute -bottom-1 -right-1 grid size-8 place-items-center rounded-full bg-primary text-primary-foreground"
+              >
+                <Camera className="size-4" />
+              </span>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                onChange={(e) => onPickAvatar(e.target.files?.[0])}
+              />
+            </div>
+
+            <div className="flex items-center gap-2 pb-1">
+              <button
+                type="button"
+                onClick={() => setSharing(true)}
+                aria-label="Compartilhar perfil"
+                className="focus-ring glass grid size-11 place-items-center rounded-full active:scale-95"
+              >
+                <Share2 className="size-4" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setEditing(true)}
+                aria-label="Editar perfil"
+                className="focus-ring glass grid size-11 place-items-center rounded-full active:scale-95"
+              >
+                <Pencil className="size-4" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setFollowing((v) => !v)}
+                aria-pressed={following}
+                className="focus-ring rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground active:scale-95 data-[on=true]:bg-secondary data-[on=true]:text-secondary-foreground"
+                data-on={following}
+              >
+                {following ? "Seguindo" : "Seguir"}
+              </button>
+            </div>
           </div>
 
-          <dl className="grid grid-cols-3 gap-2 text-center">
-            <div>
-              <dt className="sr-only">Pontos</dt>
-              <dd className="text-xl font-semibold">{total}</dd>
-              <p className="text-xs text-muted-foreground">pontos</p>
+          {/* Identidade */}
+          <div className="mt-4">
+            <h1 className="text-xl font-semibold leading-tight">{profile.name}</h1>
+            <p className="text-sm text-muted-foreground">@{profile.handle}</p>
+          </div>
+
+          <dl className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm">
+            <div className="flex gap-1.5">
+              <dd className="font-semibold">320</dd>
+              <dt className="text-muted-foreground">Seguindo</dt>
             </div>
-            <div>
-              <dt className="sr-only">Seguidores</dt>
-              <dd className="text-xl font-semibold">394</dd>
-              <p className="text-xs text-muted-foreground">seguidores</p>
+            <div className="flex gap-1.5">
+              <dd className="font-semibold">394</dd>
+              <dt className="text-muted-foreground">Seguidores</dt>
             </div>
-            <div>
-              <dt className="sr-only">Seguindo</dt>
-              <dd className="text-xl font-semibold">320</dd>
-              <p className="text-xs text-muted-foreground">seguindo</p>
+            <div className="flex gap-1.5">
+              <dd className="font-semibold">{total}</dd>
+              <dt className="text-muted-foreground">Pontos</dt>
             </div>
           </dl>
-        </header>
 
-        <div className="mt-5">
-          <h1 className="text-lg font-semibold">{profile.name}</h1>
-          <p className="mt-1 whitespace-pre-line text-sm text-muted-foreground">{profile.bio}</p>
-        </div>
+          <p className="mt-3 whitespace-pre-line text-sm leading-relaxed">{profile.bio}</p>
 
-        <div className="mt-5 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] gap-2">
-          <button
-            type="button"
-            onClick={() => setEditing(true)}
-            className="focus-ring glass inline-flex items-center justify-center gap-2 rounded-2xl py-2.5 text-sm font-medium active:scale-95"
+          {/* Abas */}
+          <div
+            role="tablist"
+            aria-label="Seções do perfil"
+            className="mt-6 flex border-b border-border/70"
           >
-            <Pencil className="size-4" aria-hidden="true" /> Editar
-          </button>
-          <button
-            type="button"
-            onClick={() => setSharing(true)}
-            className="focus-ring glass inline-flex items-center justify-center gap-2 rounded-2xl py-2.5 text-sm font-medium active:scale-95"
-          >
-            <Share2 className="size-4" aria-hidden="true" /> Compartilhar
-          </button>
-          <button
-            type="button"
-            onClick={() => setFollowing((v) => !v)}
-            aria-pressed={following}
-            aria-label="Seguir amigos"
-            className="focus-ring glass grid size-[42px] place-items-center rounded-2xl active:scale-95"
-          >
-            <UserPlus className="size-4" aria-hidden="true" />
-          </button>
-        </div>
-
-        <section aria-labelledby="pontos" className="mt-8">
-          <h2 id="pontos" className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
-            <Trophy className="size-4 text-primary" aria-hidden="true" /> Pontos nos minigames
-          </h2>
-          <ul className="mt-3 grid grid-cols-2 gap-3">
-            {scores.map((s) => (
-              <li key={s.label} className="glass rounded-3xl p-4">
-                <s.Icon aria-hidden="true" className="size-5 text-primary" />
-                <p className="mt-1 text-2xl font-semibold">{s.value}</p>
-                <p className="text-xs text-muted-foreground">{s.label}</p>
-              </li>
+            {tabs.map((t) => (
+              <button
+                key={t}
+                role="tab"
+                type="button"
+                aria-selected={tab === t}
+                onClick={() => setTab(t)}
+                className="focus-ring relative flex-1 pb-3 pt-1 text-sm font-medium text-muted-foreground aria-selected:text-foreground"
+              >
+                {t}
+                {tab === t ? (
+                  <motion.span
+                    layoutId="perfil-tab"
+                    aria-hidden="true"
+                    className="absolute inset-x-6 -bottom-px h-0.5 rounded-full bg-primary"
+                  />
+                ) : null}
+              </button>
             ))}
-          </ul>
-        </section>
+          </div>
 
-        <section aria-labelledby="conta" className="mt-8 space-y-2">
-          <h2 id="conta" className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
-            <Settings className="size-4 text-primary" aria-hidden="true" /> Conta
-          </h2>
-          <Link
-            to="/"
-            className="focus-ring glass flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm active:scale-[0.99]"
-          >
-            <Repeat className="size-4 text-primary" aria-hidden="true" /> Trocar de conta
-          </Link>
-          <Link
-            to="/"
-            className="focus-ring glass flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm text-destructive active:scale-[0.99]"
-          >
-            <LogOut className="size-4" aria-hidden="true" /> Sair da conta
-          </Link>
-        </section>
+          {tab === "Pontos" ? (
+            <section aria-label="Pontos nos minigames" className="mt-5">
+              <h2 className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                <Trophy className="size-4 text-primary" aria-hidden="true" /> Pontos nos minigames
+              </h2>
+              <ul className="mt-3 grid grid-cols-2 gap-3">
+                {scores.map((s) => (
+                  <li key={s.label} className="glass rounded-3xl p-4">
+                    <s.Icon aria-hidden="true" className="size-5 text-primary" />
+                    <p className="mt-1 text-2xl font-semibold">{s.value}</p>
+                    <p className="text-xs text-muted-foreground">{s.label}</p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : (
+            <section aria-label="Conta" className="mt-5 space-y-2">
+              <h2 className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                <Settings className="size-4 text-primary" aria-hidden="true" /> Conta
+              </h2>
+              <Link
+                to="/"
+                className="focus-ring glass flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm active:scale-[0.99]"
+              >
+                <Repeat className="size-4 text-primary" aria-hidden="true" /> Trocar de conta
+              </Link>
+              <Link
+                to="/"
+                className="focus-ring glass flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm text-destructive active:scale-[0.99]"
+              >
+                <LogOut className="size-4" aria-hidden="true" /> Sair da conta
+              </Link>
+            </section>
+          )}
+        </div>
       </main>
 
       <MobileTabBarSpacer />
@@ -379,6 +438,12 @@ function PerfilPage() {
                   className="focus-ring glass flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm active:scale-[0.99]"
                 >
                   <Instagram className="size-4 text-primary" aria-hidden="true" /> Compartilhar no Instagram
+                </a>
+                <a
+                  href="mailto:?subject=Imers%C3%A3o%20Bullying"
+                  className="focus-ring glass flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm active:scale-[0.99]"
+                >
+                  <Mail className="size-4 text-primary" aria-hidden="true" /> Enviar por e-mail
                 </a>
               </div>
             </div>

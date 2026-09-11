@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
-import { CheckCircle2, ChevronRight, Hand, XCircle } from "lucide-react";
+import { CheckCircle2, ChevronRight, GraduationCap, Hand, UserRound, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   Eye,
@@ -299,17 +299,49 @@ function Quiz({ onNext }: { onNext: () => void }) {
 
 function LoginStep() {
   const navigate = useNavigate();
+  const [mode, setMode] = useState<"entrar" | "criar">("entrar");
 
   return (
     <motion.section {...screen} className="grid w-full max-w-6xl gap-6 lg:grid-cols-2 lg:gap-10">
       <div className="flex items-center">
-        <GlassCard className="w-full p-6 sm:p-8">
-          <h2 className="text-3xl font-semibold text-gradient">Entrar</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Acesso simbólico, apenas para continuar a experiência.
+        <div className="w-full">
+          <h2 className="text-center text-3xl font-semibold sm:text-4xl">
+            {mode === "entrar" ? "Bem-vindo de volta" : "Criar sua conta"}
+          </h2>
+          <p className="mt-2 text-center text-sm text-muted-foreground">
+            {mode === "entrar"
+              ? "Entre para continuar a imersão"
+              : "Leva menos de um minuto"}
           </p>
+
+          <div
+            role="tablist"
+            aria-label="Modo de acesso"
+            className="glass mx-auto mt-7 grid max-w-sm grid-cols-2 gap-1 rounded-2xl p-1"
+          >
+            {(["entrar", "criar"] as const).map((m) => (
+              <button
+                key={m}
+                type="button"
+                role="tab"
+                aria-selected={mode === m}
+                onClick={() => setMode(m)}
+                className="focus-ring relative rounded-xl py-2.5 text-sm font-medium text-muted-foreground transition-colors aria-selected:text-foreground"
+              >
+                {mode === m ? (
+                  <motion.span
+                    layoutId="auth-pill"
+                    aria-hidden="true"
+                    className="absolute inset-0 rounded-xl bg-secondary"
+                  />
+                ) : null}
+                <span className="relative">{m === "entrar" ? "Entrar" : "Criar conta"}</span>
+              </button>
+            ))}
+          </div>
+
           <form
-            className="mt-5 space-y-4"
+            className="mx-auto mt-5 max-w-sm space-y-3"
             onSubmit={(e) => {
               e.preventDefault();
               const nome = String(new FormData(e.currentTarget).get("nome") ?? "").trim();
@@ -317,27 +349,81 @@ function LoginStep() {
                 toast.error("Escreva seu nome para continuar");
                 return;
               }
-              const id = toast.loading("Entrando…");
+              const id = toast.loading(mode === "entrar" ? "Entrando…" : "Criando conta…");
               setTimeout(() => {
                 toast.success(`Bem-vindo, ${nome}!`, { id });
                 navigate({ to: "/home" });
               }, 600);
             }}
           >
-            <div className="space-y-2">
-              <Label htmlFor="nome">Nome</Label>
-              <Input id="nome" name="nome" placeholder="Seu nome" className="h-12 rounded-2xl" />
+            <div className="relative">
+              <UserRound
+                aria-hidden="true"
+                className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground"
+              />
+              <Label htmlFor="nome" className="sr-only">
+                Nome
+              </Label>
+              <Input
+                id="nome"
+                name="nome"
+                placeholder="Seu nome"
+                autoComplete="name"
+                className="h-14 rounded-2xl pl-12 text-base"
+              />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="turma">Turma (opcional)</Label>
-              <Input id="turma" name="turma" placeholder="Ex.: 9º B" className="h-12 rounded-2xl" />
+
+            <div className="relative">
+              <GraduationCap
+                aria-hidden="true"
+                className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground"
+              />
+              <Label htmlFor="turma" className="sr-only">
+                Turma
+              </Label>
+              <Input
+                id="turma"
+                name="turma"
+                placeholder="Turma (opcional)"
+                className="h-14 rounded-2xl pl-12 text-base"
+              />
             </div>
-            <Button type="submit" size="lg" className="w-full rounded-full">
-              Entrar
+
+            <div className="flex items-center justify-between pt-1 text-sm">
+              <label className="flex cursor-pointer items-center gap-2 text-muted-foreground">
+                <input
+                  type="checkbox"
+                  name="lembrar"
+                  className="focus-ring size-4 rounded border-border accent-primary"
+                />
+                Lembrar de mim
+              </label>
+              <button
+                type="button"
+                onClick={() => toast("Acesso simbólico: basta escrever seu nome.")}
+                className="focus-ring font-medium text-primary"
+              >
+                Precisa de ajuda?
+              </button>
+            </div>
+
+            <Button type="submit" size="lg" className="mt-2 h-14 w-full rounded-2xl text-base">
+              {mode === "entrar" ? "Entrar" : "Criar conta"}
               <ChevronRight className="size-4" aria-hidden="true" />
             </Button>
+
+            <p className="pt-1 text-center text-sm text-muted-foreground">
+              {mode === "entrar" ? "Não tem conta? " : "Já tem conta? "}
+              <button
+                type="button"
+                onClick={() => setMode(mode === "entrar" ? "criar" : "entrar")}
+                className="focus-ring font-semibold text-foreground"
+              >
+                {mode === "entrar" ? "Criar conta" : "Entrar"}
+              </button>
+            </p>
           </form>
-        </GlassCard>
+        </div>
       </div>
 
       <ul className="hidden gap-3 sm:grid sm:grid-cols-2 lg:gap-4">
