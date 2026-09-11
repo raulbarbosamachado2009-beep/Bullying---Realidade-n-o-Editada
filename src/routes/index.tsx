@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
-import { CheckCircle2, ChevronRight, Hand, XCircle } from "lucide-react";
+import { CheckCircle2, ChevronRight, GraduationCap, Hand, UserRound, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   Eye,
