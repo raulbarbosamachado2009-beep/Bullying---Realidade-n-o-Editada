@@ -5,7 +5,7 @@ export interface BentoItem {
   title: string;
   description?: string;
   icon: ReactNode;
-  status?: string;
+  status?: string | undefined;
   tags?: string[];
   meta?: string;
   cta?: string;
