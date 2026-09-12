@@ -474,47 +474,42 @@ function MinigamesPage() {
       <Navbar />
       <MobileTopBar Icon={Gamepad2} title="Minigames" subtitle="Aprender jogando" />
       <main className="flex min-h-dvh flex-col items-center px-4 pb-16 pt-20 sm:px-6 lg:pt-28">
-        <div className="hidden lg:block">
-          <SectionTitle
-          eyebrow="Minigames"
-          title="Aprender jogando"
-          subtitle="Seis desafios com formatos diferentes e pontuação local. Nada é enviado para lugar nenhum."
-          />
-        </div>
-        <p className="mt-2 max-w-md text-center text-[13px] text-muted-foreground lg:hidden">
-          Seis desafios rápidos. Sua pontuação fica só no seu aparelho.
-          <LockKeyhole className="ml-1 inline size-3.5" aria-hidden="true" />
-        </p>
+        <div className="mx-auto w-full max-w-5xl">
+          <div className="hidden lg:block">
+            <SectionTitle
+              eyebrow="Minigames"
+              title="Aprender jogando"
+              subtitle="Seis desafios com formatos diferentes e pontuação local. Nada é enviado para lugar nenhum."
+            />
+          </div>
+          <p className="mt-2 text-center text-[13px] text-muted-foreground lg:hidden">
+            Seis desafios rápidos. Sua pontuação fica só no seu aparelho.
+            <LockKeyhole className="ml-1 inline size-3.5" aria-hidden="true" />
+          </p>
 
-        <div className="mx-auto mt-5 grid w-full max-w-5xl grid-cols-2 gap-3 sm:mt-8 lg:grid-cols-3 lg:gap-4">
-          {games.map((g, i) => (
-            <motion.div
-              key={g.id}
-              initial={{ opacity: 0, y: 28, filter: "blur(8px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: i * 0.08, ease: [0.32, 0.72, 0, 1] }}
-            >
-              <GlassCard
-                interactive
-                className="flex h-full flex-col gap-2 p-4 transition-transform active:scale-95 lg:gap-3 lg:p-5"
-              >
-                <g.Icon aria-hidden="true" className="size-6 text-primary lg:hidden" />
-                <span className="glass hidden size-10 items-center justify-center rounded-2xl lg:inline-flex">
-                  <g.Icon className="size-5 text-primary" aria-hidden="true" />
-                </span>
-                <h3 className="text-base font-semibold lg:text-lg">{g.title}</h3>
-                <p className="hidden text-xs leading-relaxed text-muted-foreground sm:block">{g.description}</p>
-                <p className="hidden text-xs uppercase tracking-[0.2em] text-muted-foreground sm:block">
-                  {g.kind === "quiz" ? g.questions.length : g.rounds.length} desafios
-                </p>
-                <Button size="sm" className="mt-auto w-fit rounded-full" onClick={() => start(g.id)}>
-                  Jogar
-                </Button>
-              </GlassCard>
-            </motion.div>
-          ))}
+          <motion.div
+            initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
+            className="mt-5 sm:mt-8"
+          >
+            <BentoGrid
+              items={games.map((g, i) => ({
+                title: g.title,
+                description: g.description,
+                icon: <g.Icon className="size-5" aria-hidden="true" />,
+                meta: `${g.kind === "quiz" ? g.questions.length : g.rounds.length} desafios`,
+                status: i === 0 ? "Comece aqui" : undefined,
+                hasPersistentHover: i === 0,
+                colSpan: i === 0 ? 2 : 1,
+                tags: [g.kind === "quiz" ? "perguntas" : g.kind === "order" ? "ordem" : "escala"],
+                cta: "Jogar →",
+                onClick: () => start(g.id),
+              }))}
+            />
+          </motion.div>
         </div>
+
 
         <AnimatePresence>
           {game ? (
