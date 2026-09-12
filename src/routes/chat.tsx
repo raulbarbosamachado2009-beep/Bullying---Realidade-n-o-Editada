@@ -188,70 +188,84 @@ function ChatPage() {
       ) : null}
 
       <div className="flex flex-col-reverse gap-3 lg:flex-col">
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          void send(input);
-        }}
-        className="glass flex items-end gap-2 rounded-3xl p-2"
-      >
-        <label htmlFor="chat-input" className="sr-only">
-          Escreva sua mensagem
-        </label>
-        <textarea
-          id="chat-input"
-          rows={1}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              void send(input);
-            }
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            void send(input);
           }}
-          placeholder="Escreva sua mensagem…"
-          className="max-h-40 flex-1 resize-none bg-transparent px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
-        />
-        {loading ? (
-          <button
-            type="button"
-            aria-label="Parar resposta"
-            onClick={() => abortRef.current?.abort()}
-            className="focus-ring inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground"
-          >
-            <Square className="size-4" aria-hidden="true" />
-          </button>
-        ) : (
-          <button
-            type="submit"
-            aria-label="Enviar mensagem"
-            disabled={!input.trim()}
-            className="focus-ring inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
-          >
-            <ArrowUp className="size-5" aria-hidden="true" />
-          </button>
-        )}
-      </form>
+          className="rounded-[28px] border border-border bg-card/60 p-3 backdrop-blur-2xl"
+        >
+          <label htmlFor="chat-input" className="sr-only">
+            Escreva sua mensagem
+          </label>
+          <textarea
+            id="chat-input"
+            rows={1}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                void send(input);
+              }
+            }}
+            placeholder="Como posso te ajudar hoje?"
+            className="max-h-40 w-full resize-none bg-transparent px-2 py-2 text-[15px] text-foreground placeholder:text-muted-foreground focus:outline-none"
+          />
 
-      <div className="flex flex-wrap justify-center gap-2">
-        {suggestions.map((s, i) => (
-          <button
-            key={s.text}
-            type="button"
-            onClick={() => void send(s.text)}
-            disabled={loading}
-            className={`focus-ring glass rounded-full px-3.5 py-2 text-xs text-muted-foreground transition-all hover:text-foreground active:scale-95 ${
-              i > 1 ? "hidden lg:inline-flex" : ""
-            }`}
-          >
-            <s.Icon aria-hidden="true" className="mr-1 size-3.5 lg:hidden" />
-            {s.text}
-          </button>
-        ))}
-      </div>
+          <div className="mt-1 flex items-center gap-2">
+            <button
+              type="button"
+              aria-label="Sugestões de perguntas"
+              onClick={() => setShowSuggestions((v) => !v)}
+              aria-expanded={showSuggestions}
+              className="focus-ring inline-flex size-9 items-center justify-center rounded-full bg-secondary text-foreground transition-transform active:scale-95"
+            >
+              <Plus className="size-4" aria-hidden="true" />
+            </button>
+            <span className="flex-1 text-center text-xs text-muted-foreground">IA Bullying 1.0</span>
+            {loading ? (
+              <button
+                type="button"
+                aria-label="Parar resposta"
+                onClick={() => abortRef.current?.abort()}
+                className="focus-ring inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground"
+              >
+                <Square className="size-4" aria-hidden="true" />
+              </button>
+            ) : (
+              <button
+                type="submit"
+                aria-label="Enviar mensagem"
+                disabled={!input.trim()}
+                className="focus-ring inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
+              >
+                <ArrowUp className="size-5" aria-hidden="true" />
+              </button>
+            )}
+          </div>
+        </form>
+
+        {showSuggestions ? (
+          <div className="flex flex-wrap justify-center gap-2">
+            {suggestions.map((s) => (
+              <button
+                key={s.text}
+                type="button"
+                onClick={() => void send(s.text)}
+                disabled={loading}
+                className="focus-ring rounded-full border border-border bg-card/40 px-3.5 py-2 text-xs text-muted-foreground backdrop-blur-xl transition-all hover:text-foreground active:scale-95"
+              >
+                <s.Icon aria-hidden="true" className="mr-1 inline size-3.5" />
+                {s.text}
+              </button>
+            ))}
+          </div>
+        ) : null}
       </div>
     </div>
   );
+
 
   if (!started) {
     return (
