@@ -158,12 +158,18 @@ const screen = {
 function Welcome({ onNext }: { onNext: () => void }) {
   return (
     <motion.section {...screen} className="w-full max-w-3xl text-center">
-      <h1 className="text-4xl font-semibold leading-[1.08] text-gradient sm:text-6xl lg:text-7xl">
-        Olá! <Hand aria-hidden="true" className="ml-2 inline size-8 text-primary lg:hidden" />
-        <span className="mt-3 block text-lg font-medium text-muted-foreground sm:text-2xl lg:text-3xl">
-          Seja bem-vindo à Imersão Bullying – Realidade não Editada
-        </span>
+      <p className="mx-auto inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.28em] text-muted-foreground backdrop-blur-xl">
+        <Hand aria-hidden="true" className="size-3.5 text-primary" />
+        Imersão escolar
+      </p>
+      <h1 className="mt-6 text-[2.6rem] font-semibold leading-[0.95] tracking-tight sm:text-7xl lg:text-[5.5rem]">
+        <span className="block text-gradient">Realidade</span>
+        <span className="block text-primary">não editada</span>
       </h1>
+      <p className="mx-auto mt-5 max-w-md text-sm leading-relaxed text-muted-foreground sm:text-base">
+        Bullying não é brincadeira. Aqui você aprende a identificar, prevenir, agir e apoiar — em
+        poucos minutos.
+      </p>
       <TextLoop
         className="mt-6 text-sm font-medium sm:text-base"
         staticText="Uma imersão sobre"
@@ -182,8 +188,9 @@ function Welcome({ onNext }: { onNext: () => void }) {
 function Topics({ onNext }: { onNext: () => void }) {
   return (
     <motion.section {...screen} className="w-full max-w-3xl">
-      <h2 className="text-center text-2xl font-semibold text-gradient sm:text-4xl lg:text-5xl">
-        Aqui vamos aprender:
+      <p className="text-center text-[11px] uppercase tracking-[0.3em] text-primary">Programa</p>
+      <h2 className="mt-3 text-center text-3xl font-semibold tracking-tight text-gradient sm:text-5xl">
+        Aqui vamos aprender
       </h2>
       <ul className="mx-auto mt-6 grid gap-2 sm:mt-10 sm:grid-cols-2 sm:gap-3">
         {topics.map((t, i) => (
@@ -193,10 +200,13 @@ function Topics({ onNext }: { onNext: () => void }) {
             animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
             transition={{ duration: 0.6, delay: 0.15 + i * 0.08, ease }}
           >
-            <GlassCard className="flex items-center gap-3 rounded-2xl p-3 sm:p-4">
+            <div className="group flex items-center gap-3 rounded-2xl border border-border bg-card/40 p-3 backdrop-blur-xl transition-colors hover:border-primary/40 sm:p-4">
+              <span className="w-6 shrink-0 text-[11px] font-semibold tabular-nums text-primary/70">
+                {String(i + 1).padStart(2, "0")}
+              </span>
               <t.Icon className="size-5 shrink-0 text-primary" aria-hidden="true" />
               <span className="text-sm">{t.label}</span>
-            </GlassCard>
+            </div>
           </motion.li>
         ))}
       </ul>
@@ -215,13 +225,14 @@ function Quiz({ onNext }: { onNext: () => void }) {
 
   return (
     <motion.section {...screen} className="w-full max-w-2xl">
-      <p className="text-center text-xs uppercase tracking-[0.25em] text-primary">Questão Teste</p>
-      <h2 className="mt-3 text-center text-lg font-semibold leading-snug sm:text-2xl lg:text-3xl">
-        Se algum colega de classe zomba de você por questões relacionadas à raça, etnia ou religião,
-        você:
+      <p className="text-center text-[11px] uppercase tracking-[0.3em] text-primary">
+        Questão teste
+      </p>
+      <h2 className="mx-auto mt-3 max-w-xl text-center text-lg font-semibold leading-snug tracking-tight sm:text-2xl lg:text-[1.75rem]">
+        Se algum colega zomba de você por questões de raça, etnia ou religião, você:
       </h2>
 
-      <ul className="mt-5 space-y-2 sm:mt-8 sm:space-y-3">
+      <ul className="mt-5 space-y-2 sm:mt-8">
         {options.map((o, i) => {
           const isSelected = selected === i;
           return (
@@ -235,24 +246,26 @@ function Quiz({ onNext }: { onNext: () => void }) {
                 type="button"
                 aria-pressed={isSelected}
                 onClick={() => setSelected(i)}
-                className={`focus-ring glass flex w-full items-center gap-4 rounded-2xl px-4 py-3 text-left text-sm transition-all sm:px-5 sm:py-4 duration-500 hover:scale-[1.01] ${
+                className={`focus-ring flex w-full items-center gap-4 rounded-2xl border bg-card/40 px-4 py-3.5 text-left text-sm backdrop-blur-xl transition-all duration-300 sm:px-5 ${
                   isSelected
                     ? o.good
-                      ? "border-success/60"
-                      : "border-destructive/60"
-                    : "hover:border-white/25"
+                      ? "border-success/60 bg-success/10"
+                      : "border-destructive/60 bg-destructive/10"
+                    : "border-border hover:border-primary/40"
                 }`}
               >
                 <span
                   aria-hidden="true"
-                  className={`inline-block size-4 shrink-0 rounded-full border transition-colors ${
+                  className={`inline-flex size-7 shrink-0 items-center justify-center rounded-full border text-[11px] font-semibold transition-colors ${
                     isSelected
                       ? o.good
-                        ? "border-success bg-success"
-                        : "border-destructive bg-destructive"
-                      : "border-white/40"
+                        ? "border-success bg-success text-background"
+                        : "border-destructive bg-destructive text-background"
+                      : "border-border text-muted-foreground"
                   }`}
-                />
+                >
+                  {String.fromCharCode(65 + i)}
+                </span>
                 {o.label}
               </button>
             </motion.li>
@@ -271,14 +284,14 @@ function Quiz({ onNext }: { onNext: () => void }) {
             role="status"
             className="mt-4 sm:mt-6"
           >
-            <GlassCard className="flex items-start gap-3 rounded-2xl p-4">
+            <div className="flex items-start gap-3 rounded-2xl border border-border bg-card/40 p-4 backdrop-blur-xl">
               {chosen.good ? (
                 <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-success" aria-hidden="true" />
               ) : (
                 <XCircle className="mt-0.5 size-5 shrink-0 text-destructive" aria-hidden="true" />
               )}
               <p className="text-sm leading-relaxed text-muted-foreground">{chosen.feedback}</p>
-            </GlassCard>
+            </div>
           </motion.div>
         ) : null}
       </AnimatePresence>
@@ -296,6 +309,7 @@ function Quiz({ onNext }: { onNext: () => void }) {
     </motion.section>
   );
 }
+
 
 function LoginStep() {
   const navigate = useNavigate();
