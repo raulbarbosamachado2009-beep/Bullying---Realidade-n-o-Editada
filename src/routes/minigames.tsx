@@ -19,6 +19,8 @@ import { MobileTabBar, MobileTabBarSpacer, MobileTopBar } from "@/components/Mob
 import { PageTransition } from "@/components/PageTransition";
 import { SectionTitle } from "@/components/SectionTitle";
 import { Button } from "@/components/ui/button";
+import { BentoGrid } from "@/components/ui/bento-grid";
+
 
 export const Route = createFileRoute("/minigames")({
   head: () => ({
