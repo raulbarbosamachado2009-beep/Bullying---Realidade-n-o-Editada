@@ -7,3 +7,5 @@
 - [x] Corrigir cabeçalho da IA no celular
 - [x] Avisos (toasts) no canto inferior direito
 - [x] Ajustar telas de nome/turma e perfil conforme imagens 7 e 8
+- [ ] Redesenhar landing, questão-teste e jogos com componentes 21st Dev
+- [ ] Tela da IA no estilo da imagem (mantendo cabeçalho com foto, nome, subtítulo e seta)
